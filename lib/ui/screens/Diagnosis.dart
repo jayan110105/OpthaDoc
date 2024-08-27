@@ -26,7 +26,7 @@ class Diagnosis extends StatelessWidget {
             const SizedBox(height: 10),
             _buildTextField("Follow-up"),
             const SizedBox(height: 10),
-            _buildTextField("patient Education"),
+            _buildTextField("Patient Education"),
             SizedBox(height: 20,),
             SizedBox(
               width: double.infinity,

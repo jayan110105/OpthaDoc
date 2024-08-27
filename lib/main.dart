@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:optha_doc/ui/screens/Diagnosis.dart';
+import 'package:optha_doc/ui/screens/User3.dart';
 import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/MedicalHistory.dart';
 import 'package:optha_doc/ui/screens/ClinicalExamination.dart';
+import 'package:optha_doc/ui/screens/RoleLogin.dart';
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/diagnosis',
+  initialRoute: '/home',
   routes: {
     '/home': (context) => const Home(),
     '/login': (context) => const Login(),
     '/register': (context) => const Register(),
     '/user1' : (context) => const User1(),
     '/user2' : (context) => const User2(),
+    '/user3' : (context) => const User3(),
     '/medicalhistory' : (context) => const MedicalHistory(),
     '/clinicalexamination' : (context) => const Clinicalexamination(),
     '/diagnosis' : (context) => const Diagnosis(),
+    '/rolelogin' : (context) => const Rolelogin(),
   },
   //home: Home(),
 ));
