@@ -14,7 +14,8 @@ class _RegisterState extends State<Register> {
   final List<String> _roles = [
     'Reception',
     'Optometrist',
-    'Junior Doctor/ PostGraduate'
+    'Junior Doctor/ PostGraduate',
+    'Senior Doctor/ Consultant',
   ];
 
   @override
