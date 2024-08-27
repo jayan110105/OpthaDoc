@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
+import 'package:optha_doc/ui/screens/User2.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: '/home',
@@ -10,6 +11,7 @@ void main() => runApp(MaterialApp(
     '/login': (context) => const Login(),
     '/register': (context) => const Register(),
     '/user1' : (context) => const User1(),
+    '/user2' : (context) => const User2(),
   },
   //home: Home(),
 ));

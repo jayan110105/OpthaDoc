@@ -65,7 +65,7 @@ class Login extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                       onPressed: (){
-                        Navigator.pushNamed(context, '/user1');
+                        Navigator.pushNamed(context, '/user2');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,

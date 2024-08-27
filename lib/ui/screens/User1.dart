@@ -98,6 +98,24 @@ class User1 extends StatelessWidget {
                 labelStyle: TextStyle(
                   color: Colors.black,
                 ),
+                labelText: 'Address',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Colors.black,
+                ),
                 labelText: 'Hospital No.',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
