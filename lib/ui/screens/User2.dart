@@ -132,6 +132,7 @@ class _User2State extends State<User2> {
                 ]
             ),
             CheckboxListTile(
+              activeColor: Colors.black,
               title: Text('Progressive'),
               value: selectedCheckbox == 'Progressive',
               onChanged: (value) {
@@ -141,6 +142,7 @@ class _User2State extends State<User2> {
               },
             ),
             CheckboxListTile(
+              activeColor: Colors.black,
               title: Text('Keep'),
               value: selectedCheckbox == 'Keep',
               onChanged: (value) {
@@ -157,6 +159,7 @@ class _User2State extends State<User2> {
                 ]
             ),
             CheckboxListTile(
+              activeColor: Colors.black,
               title: Text('DU only'),
               value: selectedCheckbox2 == 'DU only',
               onChanged: (value) {
@@ -166,6 +169,7 @@ class _User2State extends State<User2> {
               },
             ),
             CheckboxListTile(
+              activeColor: Colors.black,
               title: Text('Near Only'),
               value: selectedCheckbox2 == 'Near Only',
               onChanged: (value) {
@@ -175,6 +179,7 @@ class _User2State extends State<User2> {
               },
             ),
             CheckboxListTile(
+              activeColor: Colors.black,
               title: Text('Constant Use'),
               value: selectedCheckbox2 == 'Constant Use',
               onChanged: (value) {
