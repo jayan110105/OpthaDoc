@@ -3,15 +3,17 @@ import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
+import 'package:optha_doc/ui/screens/MedicalHistory.dart';
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/home',
+  initialRoute: '/medicalhistory',
   routes: {
     '/home': (context) => const Home(),
     '/login': (context) => const Login(),
     '/register': (context) => const Register(),
     '/user1' : (context) => const User1(),
     '/user2' : (context) => const User2(),
+    '/medicalhistory' : (context) => const MedicalHistory(),
   },
   //home: Home(),
 ));
