@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:optha_doc/ui/screens/Diagnosis.dart';
 import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/MedicalHistory.dart';
+import 'package:optha_doc/ui/screens/ClinicalExamination.dart';
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/medicalhistory',
+  initialRoute: '/diagnosis',
   routes: {
     '/home': (context) => const Home(),
     '/login': (context) => const Login(),
@@ -14,6 +16,8 @@ void main() => runApp(MaterialApp(
     '/user1' : (context) => const User1(),
     '/user2' : (context) => const User2(),
     '/medicalhistory' : (context) => const MedicalHistory(),
+    '/clinicalexamination' : (context) => const Clinicalexamination(),
+    '/diagnosis' : (context) => const Diagnosis(),
   },
   //home: Home(),
 ));
