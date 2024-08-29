@@ -11,6 +11,7 @@ class _User2State extends State<User2> {
   String? selectedBifocal;
   String? selectedColor;
   String? selectedRemarks;
+  double? selectedValue;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class _User2State extends State<User2> {
                 const SizedBox(),
                 const SizedBox(),
                 _buildTextLabel('Sp.'),
-                _buildTextField('R'),
+                _buildDropdown(),
                 _buildTextField('L'),
                 _buildTextLabel('Cyl.'),
                 _buildTextField('R'),
@@ -291,6 +292,32 @@ class _User2State extends State<User2> {
             hintText: hint,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDropdown() {
+    List<double> values = [];
+    for (double i = -8.0; i <= 8.0; i += 0.25) {
+      values.add(i);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: DropdownButton<double>(
+        value: selectedValue,
+        hint: Text("R"),
+        items: values.map((double value) {
+          return DropdownMenuItem<double>(
+            value: value,
+            child: Text(value.toString()),
+          );
+        }).toList(),
+        onChanged: (newValue) {
+          setState(() {
+            selectedValue = newValue;
+          });
+        },
       ),
     );
   }
