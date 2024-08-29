@@ -11,7 +11,14 @@ class _User2State extends State<User2> {
   String? selectedBifocal;
   String? selectedColor;
   String? selectedRemarks;
-  double? selectedValue;
+  double? selectedSpR;
+  double? selectedSpL;
+  double? selectedCylR;
+  double? selectedCylL;
+  String? selectedSignSpR;
+  String? selectedSignSpL;
+  String? selectedSignCylR;
+  String? selectedSignCylL;
 
   @override
   Widget build(BuildContext context) {
@@ -47,24 +54,70 @@ class _User2State extends State<User2> {
                 _buildEyeLabel("ARK"),
                 const SizedBox(),
                 const SizedBox(),
-                _buildTextLabel('Sp.'),
-                _buildDropdown(),
-                _buildTextField('L'),
-                _buildTextLabel('Cyl.'),
-                _buildTextField('R'),
-                _buildTextField('L'),
+              ],
+            ),
+            GridView.count(
+              crossAxisCount: 4,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildSignDropdown(selectedSignSpR, (newValue) {
+                  setState(() {
+                    selectedSignSpR = newValue;
+                  });
+                }),
+                _buildDropdown(8, "Sp.", selectedSpR, (newValue) {
+                  setState(() {
+                    selectedSpR = newValue;
+                  });
+                }),
+                _buildSignDropdown(selectedSignSpL, (newValue) {
+                  setState(() {
+                    selectedSignSpL = newValue;
+                  });
+                }),
+                _buildDropdown(8, "Sp.", selectedSpL, (newValue) {
+                  setState(() {
+                    selectedSpL = newValue;
+                  });
+                }),
+                _buildSignDropdown(selectedSignCylR, (newValue) {
+                  setState(() {
+                    selectedSignCylR = newValue;
+                  });
+                }),
+                _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
+                  setState(() {
+                    selectedCylR = newValue;
+                  });
+                }),
+                _buildSignDropdown(selectedSignCylL, (newValue) {
+                  setState(() {
+                    selectedSignCylL = newValue;
+                  });
+                }),
+                _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
+                  setState(() {
+                    selectedCylL = newValue;
+                  });
+                }),
                 _buildTextLabel('Axis'),
                 _buildTextField('R'),
+                SizedBox(),
                 _buildTextField('L'),
-              ],
+              ]
             ),
             SizedBox(height: 20,),
             Row(
               children: [
                 _buildTextLabel("IPD"),
-                SizedBox(width: 125,),
+                SizedBox(width: 75,),
                 Container(
-                  width: 215,
+                  width: 281,
                   child: TextField(
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -191,7 +244,7 @@ class _User2State extends State<User2> {
             _buildEyeLabel("Remarks"),
             _buildCheckboxListTile('D.V. only', selectedRemarks, (value) {
               setState(() {
-                selectedRemarks = (value ?? false) ? 'D.V only' : null;
+                selectedRemarks = (value ?? false) ? 'D.V. only' : null;
               });
             }),
             _buildCheckboxListTile('N.V. Only', selectedRemarks, (value) {
@@ -282,9 +335,7 @@ class _User2State extends State<User2> {
   }
 
   Widget _buildTextField(String hint) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: SizedBox(
+    return SizedBox(
         width: 80, // Use SizedBox instead of Container to enforce fixed width
         child: TextField(
           decoration: InputDecoration(
@@ -292,33 +343,41 @@ class _User2State extends State<User2> {
             hintText: hint,
           ),
         ),
-      ),
-    );
+      );
   }
 
-  Widget _buildDropdown() {
+  Widget _buildDropdown(int val, String hint, double? selectedValue, Function(double?) onChanged) {
     List<double> values = [];
-    for (double i = -8.0; i <= 8.0; i += 0.25) {
+    for (double i = 0; i <= val; i += 0.25) {
       values.add(i);
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: DropdownButton<double>(
-        value: selectedValue,
-        hint: Text("R"),
-        items: values.map((double value) {
-          return DropdownMenuItem<double>(
-            value: value,
-            child: Text(value.toString()),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          setState(() {
-            selectedValue = newValue;
-          });
-        },
-      ),
+    return DropdownButton<double>(
+      value: selectedValue,
+      hint: Text(hint),
+      items: values.map((double value) {
+        return DropdownMenuItem<double>(
+          value: value,
+          child: Text(value.toString()),
+        );
+      }).toList(),
+      onChanged: onChanged,
+    );
+  }
+
+  Widget _buildSignDropdown(String? selectedSign, Function(String?) onChanged) {
+    List<String> signs = ["+", "-"];
+
+    return DropdownButton<String>(
+      value: selectedSign,
+      hint: Text("+/-"),
+      items: signs.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 }
