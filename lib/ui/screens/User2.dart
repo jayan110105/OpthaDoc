@@ -8,8 +8,9 @@ class User2 extends StatefulWidget {
 }
 
 class _User2State extends State<User2> {
-  String? selectedCheckbox;
-  String? selectedCheckbox2;
+  String? selectedBifocal;
+  String? selectedColor;
+  String? selectedRemarks;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class _User2State extends State<User2> {
             SizedBox(height: 20,),
             Row(
               children: [
-                _buildTextLabel("IOP"),
+                _buildTextLabel("IPD"),
                 SizedBox(width: 125,),
                 Container(
                   width: 215,
@@ -69,7 +70,7 @@ class _User2State extends State<User2> {
                       labelStyle: const TextStyle(
                         color: Colors.black,
                       ),
-                      labelText: 'Enter IOP value',
+                      labelText: 'Enter IPD value',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -109,10 +110,10 @@ class _User2State extends State<User2> {
                 _buildEyeLabel("L"),
               ],
             ),
-            SizedBox(),
+            _buildTextLabel("Sp."),
             _buildTextField("R"),
             _buildTextField("L"),
-            SizedBox(),
+            _buildTextLabel("Cyl."),
             _buildTextField("R"),
             _buildTextField("L"),
             _buildTextLabel("Axis"),
@@ -125,69 +126,83 @@ class _User2State extends State<User2> {
           ),
             SizedBox(height: 20,),
             Divider(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildEyeLabel("Select one")
-                ]
-            ),
-            CheckboxListTile(
-              activeColor: Colors.black,
-              title: Text('Progressive'),
-              value: selectedCheckbox == 'Progressive',
-              onChanged: (value) {
-                setState(() {
-                  selectedCheckbox = value! ? 'Progressive' : null;
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.black,
-              title: Text('Keep'),
-              value: selectedCheckbox == 'Keep',
-              onChanged: (value) {
-                setState(() {
-                  selectedCheckbox = value! ? 'Keep' : null;
-                });
-              },
-            ),
+            _buildEyeLabel("Bifocal"),
+            _buildCheckboxListTile('Kryptok', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'Kryptok' : null;
+              });
+            }),
+            _buildCheckboxListTile('Executive', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'Executive' : null;
+              });
+            }),
+            _buildCheckboxListTile('D-Segment', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'D-Segment' : null;
+              });
+            }),
+            _buildCheckboxListTile('Trifocal', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'Trifocal' : null;
+              });
+            }),
+            _buildCheckboxListTile('Omnivision', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'Omnivision' : null;
+              });
+            }),
+            _buildCheckboxListTile('Progressive', selectedBifocal, (value) {
+              setState(() {
+                selectedBifocal = (value ?? false) ? 'Progressive' : null;
+              });
+            }),
+
             Divider(),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildEyeLabel("Select one")
-                ]
-            ),
-            CheckboxListTile(
-              activeColor: Colors.black,
-              title: Text('DU only'),
-              value: selectedCheckbox2 == 'DU only',
-              onChanged: (value) {
-                setState(() {
-                    selectedCheckbox2 = value! ? 'DU only' : null;
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.black,
-              title: Text('Near Only'),
-              value: selectedCheckbox2 == 'Near Only',
-              onChanged: (value) {
-                setState(() {
-                  selectedCheckbox2 = value! ? 'Near Only' : null;
-                });
-              },
-            ),
-            CheckboxListTile(
-              activeColor: Colors.black,
-              title: Text('Constant Use'),
-              value: selectedCheckbox2 == 'Constant Use',
-              onChanged: (value) {
-                setState(() {
-                  selectedCheckbox2 = value! ? 'Constant Use' : null;
-                });
-              },
-            ),
+            _buildEyeLabel("Colour"),
+            _buildCheckboxListTile('White', selectedColor, (value) {
+              setState(() {
+                selectedColor = (value ?? false) ? 'White' : null;
+              });
+            }),
+            _buildCheckboxListTile('SP2Alpha', selectedColor, (value) {
+              setState(() {
+                selectedColor = (value ?? false) ? 'SP2Alpha' : null;
+              });
+            }),
+            _buildCheckboxListTile('Photogrey', selectedColor, (value) {
+              setState(() {
+                selectedColor = (value ?? false) ? 'Photogrey' : null;
+              });
+            }),
+            _buildCheckboxListTile('Photosun', selectedColor, (value) {
+              setState(() {
+                selectedColor = (value ?? false) ? 'Photosun' : null;
+              });
+            }),
+            _buildCheckboxListTile('Photobrown', selectedColor, (value) {
+              setState(() {
+                selectedColor = (value ?? false) ? 'Photobrown' : null;
+              });
+            }),
+
+            Divider(),
+            _buildEyeLabel("Remarks"),
+            _buildCheckboxListTile('D.V. only', selectedRemarks, (value) {
+              setState(() {
+                selectedRemarks = (value ?? false) ? 'D.V only' : null;
+              });
+            }),
+            _buildCheckboxListTile('N.V. Only', selectedRemarks, (value) {
+              setState(() {
+                selectedRemarks = (value ?? false) ? 'N.V. Only' : null;
+              });
+            }),
+            _buildCheckboxListTile('Constant Use', selectedRemarks, (value) {
+              setState(() {
+                selectedRemarks = (value ?? false) ? 'Constant Use' : null;
+              });
+            }),
             SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,6 +247,15 @@ class _User2State extends State<User2> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCheckboxListTile(String title, String? groupValue, Function(bool?) onChanged) {
+    return CheckboxListTile(
+      activeColor: Colors.black,
+      title: Text(title),
+      value: groupValue == title,
+      onChanged: onChanged,
     );
   }
 
