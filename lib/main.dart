@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:optha_doc/firebase_options.dart';
 import 'package:optha_doc/ui/screens/Diagnosis.dart';
 import 'package:optha_doc/ui/screens/User3.dart';
 import 'package:optha_doc/ui/screens/login.dart';
@@ -9,7 +11,10 @@ import 'package:optha_doc/ui/screens/MedicalHistory.dart';
 import 'package:optha_doc/ui/screens/ClinicalExamination.dart';
 import 'package:optha_doc/ui/screens/RoleLogin.dart';
 
-void main() => runApp(MaterialApp(
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(MaterialApp(
   initialRoute: '/home',
   routes: {
     '/home': (context) => const Home(),
@@ -25,6 +30,7 @@ void main() => runApp(MaterialApp(
   },
   //home: Home(),
 ));
+}
 
 class Home extends StatelessWidget {
   const Home({super.key});

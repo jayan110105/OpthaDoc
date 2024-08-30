@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1012395202694",
+    "project_id": "opthadoc-8bfea",
+    "storage_bucket": "opthadoc-8bfea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012395202694:android:57e1e6cf37e28f055d9907",
+        "android_client_info": {
+          "package_name": "com.example.optha_doc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoPHKjNpPjWF3_2R2x6oybL-W_vb8JjPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012395202694:android:986b6fb8820a0e755d9907",
+        "android_client_info": {
+          "package_name": "com.jayanpaliwal.optha_doc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoPHKjNpPjWF3_2R2x6oybL-W_vb8JjPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

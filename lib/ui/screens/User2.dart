@@ -11,14 +11,24 @@ class _User2State extends State<User2> {
   String? selectedBifocal;
   String? selectedColor;
   String? selectedRemarks;
-  double? selectedSpR;
-  double? selectedSpL;
+  double? selectedDVSpR;
+  double? selectedDVSpL;
+  double? selectedNVSpR;
+  double? selectedNVSpL;
   double? selectedCylR;
   double? selectedCylL;
-  String? selectedSignSpR;
-  String? selectedSignSpL;
+  String? selectedSignDVSpR;
+  String? selectedSignDVSpL;
+  String? selectedSignNVSpR;
+  String? selectedSignNVSpL;
   String? selectedSignCylR;
   String? selectedSignCylL;
+  String? selectedDVR;
+  String? selectedDVL;
+  String? selectedDVR2;
+  String? selectedDVL2;
+  String? selectedNVR;
+  String? selectedNVL;
 
   @override
   Widget build(BuildContext context) {
@@ -40,22 +50,118 @@ class _User2State extends State<User2> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 const SizedBox(),
-                _buildEyeLabel("R (Right Eye)"),
-                _buildEyeLabel("L (Left Eye)"),
+                Center(child: _buildEyeLabel("RIGHT Eye")),
+                Center(child: _buildEyeLabel("LEFT Eye")),
                 _buildTextLabel('Distance Vision'),
-                _buildTextField('R'),
-                _buildTextField('L'),
-                _buildTextLabel('Pinhole'),
-                _buildTextField('R'),
-                _buildTextField('L'),
-                _buildTextLabel('Glasses'),
-                _buildTextField('R'),
-                _buildTextField('L'),
-                _buildEyeLabel("ARK"),
-                const SizedBox(),
-                const SizedBox(),
+                _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
+                  setState(() {
+                    selectedDVR = newValue;
+                  });
+                }),
+                _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
+                  setState(() {
+                    selectedDVL = newValue;
+                  });
+                }),
               ],
             ),
+            SizedBox(height: 20,),
+            Divider(),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildEyeLabel("D.V."),
+              ],
+            ),
+            SizedBox(height: 20,),
+            GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildTextLabel('Distance Vision'),
+                _buildDistanceVisionDropdown(selectedDVR2, "R", (newValue) {
+                  setState(() {
+                    selectedDVR2 = newValue;
+                  });
+                }),
+                _buildDistanceVisionDropdown(selectedDVL2, "L", (newValue) {
+                  setState(() {
+                    selectedDVL2 = newValue;
+                  });
+                }),
+              ]
+            ),
+            SizedBox(height: 16,),
+            GridView.count(
+                crossAxisCount: 4,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildSignDropdown(selectedSignDVSpR, (newValue) {
+                    setState(() {
+                      selectedSignDVSpR = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", selectedDVSpR, (newValue) {
+                    setState(() {
+                      selectedDVSpR = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(selectedSignDVSpL, (newValue) {
+                    setState(() {
+                      selectedSignDVSpL = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", selectedDVSpL, (newValue) {
+                    setState(() {
+                      selectedDVSpL = newValue;
+                    });
+                  }),
+                ]
+            ),
+            SizedBox(height: 20,),
+            Divider(),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildEyeLabel("N.V."),
+              ],
+            ),
+            SizedBox(height: 20,),
+            GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildTextLabel('Near Vision'),
+                _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                  setState(() {
+                    selectedNVR = newValue;
+                  });
+                }),
+                _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
+                  setState(() {
+                    selectedNVL = newValue;
+                  });
+                }),
+              ]
+            ),
+            SizedBox(height: 16,),
             GridView.count(
               crossAxisCount: 4,
               childAspectRatio: 2,
@@ -65,26 +171,40 @@ class _User2State extends State<User2> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildSignDropdown(selectedSignSpR, (newValue) {
+                _buildSignDropdown(selectedSignNVSpR, (newValue) {
                   setState(() {
-                    selectedSignSpR = newValue;
+                    selectedSignNVSpR = newValue;
                   });
                 }),
-                _buildDropdown(8, "Sp.", selectedSpR, (newValue) {
+                _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
                   setState(() {
-                    selectedSpR = newValue;
+                    selectedNVSpR = newValue;
                   });
                 }),
-                _buildSignDropdown(selectedSignSpL, (newValue) {
+                _buildSignDropdown(selectedSignNVSpL, (newValue) {
                   setState(() {
-                    selectedSignSpL = newValue;
+                    selectedSignNVSpL = newValue;
                   });
                 }),
-                _buildDropdown(8, "Sp.", selectedSpL, (newValue) {
+                _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
                   setState(() {
-                    selectedSpL = newValue;
+                    selectedNVSpL = newValue;
                   });
                 }),
+              ]
+            ),
+            SizedBox(height: 16,),
+            Divider(),
+            SizedBox(height: 20,),
+            GridView.count(
+                crossAxisCount: 4,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
                 _buildSignDropdown(selectedSignCylR, (newValue) {
                   setState(() {
                     selectedSignCylR = newValue;
@@ -105,19 +225,30 @@ class _User2State extends State<User2> {
                     selectedCylL = newValue;
                   });
                 }),
+              ]
+            ),
+            SizedBox(height: 16,),
+            GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
                 _buildTextLabel('Axis'),
                 _buildTextField('R'),
-                SizedBox(),
                 _buildTextField('L'),
               ]
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 16,),
             Row(
               children: [
                 _buildTextLabel("IPD"),
-                SizedBox(width: 75,),
+                SizedBox(width: 125,),
                 Container(
-                  width: 281,
+                  width: 215,
                   child: TextField(
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
@@ -139,47 +270,9 @@ class _User2State extends State<User2> {
               ],
             ),
           SizedBox(height: 20,),
-          GridView.count(
-          crossAxisCount: 3,
-          childAspectRatio: 2,
-          crossAxisSpacing: 16.0,
-          mainAxisSpacing: 16.0,
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            _buildEyeLabel("BGC"),
-            SizedBox(),
-            SizedBox(),
-            SizedBox(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildEyeLabel("R"),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildEyeLabel("L"),
-              ],
-            ),
-            _buildTextLabel("Sp."),
-            _buildTextField("R"),
-            _buildTextField("L"),
-            _buildTextLabel("Cyl."),
-            _buildTextField("R"),
-            _buildTextField("L"),
-            _buildTextLabel("Axis"),
-            _buildTextField("R"),
-            _buildTextField("L"),
-            _buildTextLabel("ADD"),
-            _buildTextField("R"),
-            _buildTextField("L"),
-          ],
-          ),
             SizedBox(height: 20,),
             Divider(),
+            SizedBox(height: 20,),
             _buildEyeLabel("Bifocal"),
             _buildCheckboxListTile('Kryptok', selectedBifocal, (value) {
               setState(() {
@@ -213,6 +306,7 @@ class _User2State extends State<User2> {
             }),
 
             Divider(),
+            SizedBox(height: 20,),
             _buildEyeLabel("Colour"),
             _buildCheckboxListTile('White', selectedColor, (value) {
               setState(() {
@@ -241,6 +335,7 @@ class _User2State extends State<User2> {
             }),
 
             Divider(),
+            SizedBox(height: 20,),
             _buildEyeLabel("Remarks"),
             _buildCheckboxListTile('D.V. only', selectedRemarks, (value) {
               setState(() {
@@ -335,15 +430,18 @@ class _User2State extends State<User2> {
   }
 
   Widget _buildTextField(String hint) {
-    return SizedBox(
-        width: 80, // Use SizedBox instead of Container to enforce fixed width
-        child: TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: hint,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: SizedBox(
+          width: 80, // Use SizedBox instead of Container to enforce fixed width
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: hint,
+            ),
           ),
         ),
-      );
+    );
   }
 
   Widget _buildDropdown(int val, String hint, double? selectedValue, Function(double?) onChanged) {
@@ -378,6 +476,43 @@ class _User2State extends State<User2> {
         );
       }).toList(),
       onChanged: onChanged,
+    );
+  }
+
+  Widget _buildDistanceVisionDropdown(String? value,String hint, Function(String?) onChanged) {
+    List<String> visionValues = ["6/6", "6/9", "6/12", "6/18", "6/24", "6/36", "6/60", "3/60", "1/60"];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: DropdownButton<String>(
+        value: value,
+        hint: Text(hint),
+        items: visionValues.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: onChanged,
+      ),
+    );
+  }
+  Widget _buildNearVisionDropdown(String? value,String hint, Function(String?) onChanged) {
+    List<String> visionValues = ["N5", "N6", "N8", "N10", "N12", "N14", "N18", "N24", "N36", "N48", "N60"];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: DropdownButton<String>(
+        value: value,
+        hint: Text(hint),
+        items: visionValues.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: onChanged,
+      ),
     );
   }
 }
