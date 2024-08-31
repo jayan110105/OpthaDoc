@@ -40,6 +40,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -76,6 +77,16 @@ class Dashboard extends StatelessWidget {
                         ),
                       ),
                       MenuAnchor(
+                        style: MenuStyle(
+                          backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+                          elevation: WidgetStateProperty.all(10),
+                          shape: WidgetStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          shadowColor: WidgetStateProperty.all(Colors.black),
+                        ),
                         builder: (BuildContext context, MenuController controller, Widget? child) {
                           return GestureDetector(
                             onTap: () {
@@ -94,19 +105,19 @@ class Dashboard extends StatelessWidget {
                         menuChildren: [
                           Container(
                             // color: Colors.white,
-                            // margin: EdgeInsets.only(top: 10),
-                            // padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 1),
-                                ),
-                              ],
-                            ),
+                            margin: EdgeInsets.only(top: 5),
+                            padding: EdgeInsets.all(10),
+                            // decoration: BoxDecoration(
+                            //   color: Colors.white,
+                            //   borderRadius: BorderRadius.circular(10),
+                            //   boxShadow: [
+                            //     BoxShadow(
+                            //       color: Colors.black26,
+                            //       blurRadius: 5,
+                            //       offset: Offset(0, 1),
+                            //     ),
+                            //   ],
+                            // ),
                             child: ListTile(
                               leading: Icon(Icons.logout, color: Colors.black),
                               title: Text(
