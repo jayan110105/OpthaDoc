@@ -140,16 +140,16 @@ class _RegisterState extends State<Register> {
     try {
       // Create a new user with email and password
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
 
       // Perform additional actions such as saving user data to Firestore or displaying a success message
       String uid = userCredential.user!.uid;
 
       await _firestore.collection('users').doc(uid).set({
-        'username': _usernameController.text,
-        'email': _emailController.text,
+        'username': _usernameController.text.trim(),
+        'email': _emailController.text.trim(),
         'role': _selectedRole,
         'createdAt': Timestamp.now(),
       });
