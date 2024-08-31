@@ -111,6 +111,7 @@ class _LoginState extends State<Login> {
     });
 
     try {
+      print(_usernameController.text);
       // Retrieve email from Firestore based on username
       QuerySnapshot querySnapshot = await _firestore
           .collection('users')
@@ -118,6 +119,7 @@ class _LoginState extends State<Login> {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
+        print("bug");
         throw FirebaseAuthException(
           code: 'user-not-found',
           message: 'No user found for that username.',

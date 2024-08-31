@@ -49,7 +49,7 @@ class Dashboard extends StatelessWidget {
         future: _getUserDetails(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Colors.black,));
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -88,15 +88,14 @@ class Dashboard extends StatelessWidget {
                             child: CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 30.0,
-                              foregroundColor: Colors.black,
                             ),
                           );
                         },
                         menuChildren: [
                           Container(
                             // color: Colors.white,
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.all(10),
+                            // margin: EdgeInsets.only(top: 10),
+                            // padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -142,14 +141,14 @@ class Dashboard extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           _buildDashboardButton(Icons.person_add, 'Registration'),
-                          if (role == 'Optometrist' || role == 'Junior Doctor' || role == 'Senior Doctor')
+                          if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.visibility, 'Eye Checkup'),
-                          if (role == 'Junior Doctor' || role == 'Senior Doctor')
+                          if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.assignment, 'View Records'),
-                          if (role == 'Junior Doctor' || role == 'Senior Doctor')
+                          if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.edit, 'Edit Records'),
-                          if (role == 'Counsellor')
-                            _buildDashboardButton(Icons.event, 'Schedule Appointment'),
+                          if (role == 'Senior Doctor/ Consultant')
+                            _buildDashboardButton(Icons.event, 'Appointment'),
                         ],
                       ),
                     ),
