@@ -7,6 +7,7 @@ import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
+import 'package:optha_doc/ui/screens/dashboard.dart';
 import 'package:optha_doc/ui/screens/MedicalHistory.dart';
 import 'package:optha_doc/ui/screens/ClinicalExamination.dart';
 import 'package:optha_doc/ui/screens/RoleLogin.dart';
@@ -23,6 +24,7 @@ void main() async{
     '/user1' : (context) => const User1(),
     '/user2' : (context) => const User2(),
     '/user3' : (context) => const User3(),
+    '/dashboard' : (context) => const Dashboard(),
     '/medicalhistory' : (context) => const MedicalHistory(),
     '/clinicalexamination' : (context) => const Clinicalexamination(),
     '/diagnosis' : (context) => const Diagnosis(),
