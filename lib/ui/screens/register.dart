@@ -179,7 +179,6 @@ class _RegisterState extends State<Register> {
       } else if (e.code == 'email-already-in-use') {
         message = 'The account already exists for that email.';
       } else {
-        print(e.code);
         message = 'An error occurred. Please try again.';
       }
 
