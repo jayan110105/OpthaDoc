@@ -151,15 +151,19 @@ class Dashboard extends StatelessWidget {
                         mainAxisSpacing: 30.0,
                         shrinkWrap: true,
                         children: [
-                          _buildDashboardButton(Icons.person_add, 'Registration'),
+                          _buildDashboardButton(Icons.person_add, 'Registration', () {
+                            Navigator.pushNamed(context, '/user1');
+                          }),
                           if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.visibility, 'Eye Checkup'),
+                            _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
+                              Navigator.pushNamed(context, '/user2');
+                            }),
                           if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.assignment, 'View Records'),
+                            _buildDashboardButton(Icons.assignment, 'View Records',(){}),
                           if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.edit, 'Edit Records'),
+                            _buildDashboardButton(Icons.edit, 'Edit Records',(){}),
                           if (role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.event, 'Appointment'),
+                            _buildDashboardButton(Icons.event, 'Appointment',(){}),
                         ],
                       ),
                     ),
@@ -173,11 +177,11 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildDashboardButton(IconData icon, String label) {
+  Widget _buildDashboardButton(IconData icon, String label, VoidCallback onPressed) {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.black,
             foregroundColor: Colors.white,
