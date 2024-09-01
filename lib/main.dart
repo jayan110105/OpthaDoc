@@ -3,11 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:optha_doc/firebase_options.dart';
 import 'package:optha_doc/ui/screens/Diagnosis.dart';
+import 'package:optha_doc/ui/screens/PatientSearch.dart';
 import 'package:optha_doc/ui/screens/User3.dart';
 import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
-import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/dashboard.dart';
 import 'package:optha_doc/ui/screens/MedicalHistory.dart';
 import 'package:optha_doc/ui/screens/ClinicalExamination.dart';
@@ -26,7 +26,7 @@ void main() async{
     '/login': (context) => const Login(),
     '/register': (context) => const Register(),
     '/user1' : (context) => const User1(),
-    '/user2' : (context) => const User2(),
+    '/patientsearch' : (context) => const SearchPatient(),
     '/user3' : (context) => const User3(),
     '/dashboard' : (context) => const Dashboard(),
     '/medicalhistory' : (context) => const MedicalHistory(),

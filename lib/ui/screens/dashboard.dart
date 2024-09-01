@@ -156,7 +156,7 @@ class Dashboard extends StatelessWidget {
                           }),
                           if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
-                              Navigator.pushNamed(context, '/user2');
+                              Navigator.pushNamed(context, '/patientsearch');
                             }),
                           if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.assignment, 'View Records',(){}),

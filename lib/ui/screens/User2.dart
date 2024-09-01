@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User2 extends StatefulWidget {
-  const User2({super.key});
+  final String patientId;
+
+  const User2({required this.patientId, super.key});
 
   @override
   State<User2> createState() => _User2State();
@@ -29,6 +32,58 @@ class _User2State extends State<User2> {
   String? selectedDVL2;
   String? selectedNVR;
   String? selectedNVL;
+
+  final TextEditingController _axisRController = TextEditingController();
+  final TextEditingController _axisLController = TextEditingController();
+  final TextEditingController _ipdController = TextEditingController();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  bool _isLoading = false;
+
+  Future<void> saveOptometryDetails() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _firestore.collection('optometryDetails').add({
+        'patientId': widget.patientId,
+        'Bifocal': selectedBifocal,
+        'Color': selectedColor,
+        'Remarks': selectedRemarks,
+        'DVSpR': '$selectedSignDVSpR$selectedDVSpR',
+        'DVSpL': '$selectedSignDVSpR$selectedDVSpL',
+        'NVSpR': '$selectedSignNVSpR$selectedNVSpR',
+        'NVSpL': '$selectedSignNVSpR$selectedNVSpL',
+        'CylR': '$selectedSignCylR$selectedCylR',
+        'CylL': '$selectedSignCylL$selectedCylL',
+        'DVR': selectedDVR,
+        'DVL': selectedDVL,
+        'DVR2': selectedDVR2,
+        'DVL2': selectedDVL2,
+        'NVR': selectedNVR,
+        'NVL': selectedNVL,
+        'AxisR': _axisRController.text,
+        'AxisL': _axisLController.text,
+        'IPD': _ipdController.text,
+        'createdAt': Timestamp.now(),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Optometry details saved successfully!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save optometry details: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,8 +293,8 @@ class _User2State extends State<User2> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildTextLabel('Axis'),
-                _buildTextField('R'),
-                _buildTextField('L'),
+                _buildTextField('R', _axisRController),
+                _buildTextField('L', _axisLController),
               ]
             ),
             SizedBox(height: 16,),
@@ -250,6 +305,7 @@ class _User2State extends State<User2> {
                 Container(
                   width: 215,
                   child: TextField(
+                    controller: _ipdController,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
                       labelStyle: const TextStyle(
@@ -374,22 +430,27 @@ class _User2State extends State<User2> {
                       ),
                     )
                 ),
-                TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                    ),
-                    onPressed: (){},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 50),
-                      child: Text(
-                        "Save",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                _isLoading
+                    ? Container(
+                      width: 200,
+                      child: Center(child: CircularProgressIndicator(color: Colors.black))
                     )
+                    : TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.all(10),
+                  ),
+                  onPressed: saveOptometryDetails,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                    child: Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ],
             )
@@ -429,12 +490,13 @@ class _User2State extends State<User2> {
     );
   }
 
-  Widget _buildTextField(String hint) {
+  Widget _buildTextField(String hint, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SizedBox(
           width: 80, // Use SizedBox instead of Container to enforce fixed width
           child: TextField(
+            controller: controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: hint,
