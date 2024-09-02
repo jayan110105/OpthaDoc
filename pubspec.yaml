@@ -43,6 +43,7 @@ dependencies:
   firebase_storage: ^12.2.0
   firebase_app_check: ^0.3.0+5
   google_mlkit_text_recognition: ^0.13.0
+  logger: ^2.4.0
 
 dev_dependencies:
   flutter_test:
