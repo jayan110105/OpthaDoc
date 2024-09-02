@@ -152,14 +152,16 @@ class Dashboard extends StatelessWidget {
                         shrinkWrap: true,
                         children: [
                           _buildDashboardButton(Icons.person_add, 'Registration', () {
-                            Navigator.pushNamed(context, '/user1');
+                            Navigator.pushNamed(context, '/registartion');
                           }),
                           if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
-                              Navigator.pushNamed(context, '/patientsearch');
+                              Navigator.pushNamed(context, '/eyecheckup');
                             }),
                           if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.assignment, 'View Records',(){}),
+                            _buildDashboardButton(Icons.assignment, 'View Records',(){
+                              Navigator.pushNamed(context, '/viewrecords');
+                            }),
                           if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
                             _buildDashboardButton(Icons.edit, 'Edit Records',(){}),
                           if (role == 'Senior Doctor/ Consultant')

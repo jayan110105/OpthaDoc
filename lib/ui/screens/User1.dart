@@ -48,11 +48,11 @@ class _User1State extends State<User1> {
         imageUrl = await uploadImage(_image!);
       }
 
-      await _firestore.collection('patients').add({
+      await _firestore.collection('patients').doc(_aadhaarController.text.trim().replaceAll(' ', '')).set({
         'name': _nameController.text.trim(),
         'age': _ageController.text.trim(),
         'gender': _selectedGender,
-        'aadhaarNumber': _aadhaarController.text.trim(),
+        'aadhaarNumber': _aadhaarController.text.trim().replaceAll(' ', ''),
         'phoneNumber': _phoneController.text.trim(),
         'imageUrl': imageUrl,
         'createdAt': Timestamp.now(),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
+import 'package:optha_doc/ui/screens/ViewRecords.dart';
 
 class SearchPatient extends StatefulWidget {
-  const SearchPatient({super.key});
+
+  final String routeName;
+
+  const SearchPatient({required this.routeName, super.key});
 
   @override
   State<SearchPatient> createState() => _SearchPatientState();
@@ -28,10 +32,19 @@ class _SearchPatientState extends State<SearchPatient> {
 
       if (querySnapshot.docs.isNotEmpty) {
         // Patient found, navigate to optometry details screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => User2(patientId: querySnapshot.docs.first.id)),
-        );
+        if(widget.routeName == 'eyecheckup'){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => User2(patientId: querySnapshot.docs.first.id)),
+          );
+        } else if(widget.routeName == 'viewrecords'){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Viewrecords(patientId: querySnapshot.docs.first.id)),
+          );
+        } else
+        {
+        }
       } else {
         // Patient not found, show error message
         ScaffoldMessenger.of(context).showSnackBar(
