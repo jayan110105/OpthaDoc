@@ -138,6 +138,8 @@ class _EditRecordsState extends State<EditRecords> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Records updated successfully')),
           );
+          Navigator.pop(context);
+          Navigator.pop(context);
         }
       }catch (e) {
         print('Error updating records: $e');

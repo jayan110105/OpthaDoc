@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:optha_doc/ui/screens/EditRecords.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/ViewRecords.dart';
+import 'package:optha_doc/ui/screens/appointment.dart';
 
 class SearchPatient extends StatefulWidget {
 
@@ -48,6 +49,12 @@ class _SearchPatientState extends State<SearchPatient> {
             context,
             MaterialPageRoute(builder: (context) =>
                 EditRecords(patientId: querySnapshot.docs.first.id)),
+          );
+        }else if(widget.routeName == 'appointment') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>
+                Appointment(patientId: querySnapshot.docs.first.id)),
           );
         }else
         {

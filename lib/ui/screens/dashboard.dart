@@ -167,7 +167,9 @@ class Dashboard extends StatelessWidget {
                               Navigator.pushNamed(context, '/editrecords');
                             }),
                           if (role == 'Senior Doctor/ Consultant')
-                            _buildDashboardButton(Icons.event, 'Appointment',(){}),
+                            _buildDashboardButton(Icons.event, 'Appointment',(){
+                              Navigator.pushNamed(context, '/appointment');
+                            }),
                         ],
                       ),
                     ),

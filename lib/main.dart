@@ -20,6 +20,11 @@ void main() async{
   User? user = FirebaseAuth.instance.currentUser;
 
   runApp(MaterialApp(
+    theme: ThemeData(
+      textSelectionTheme: TextSelectionThemeData(
+        selectionHandleColor: Colors.black, // Change the selection handle (cursor dropper) color to black
+      ),
+    ),
   initialRoute: user != null ? '/dashboard' : '/home',
   routes: {
     '/home': (context) => const Home(),
@@ -30,6 +35,7 @@ void main() async{
     '/eyecheckup' : (context) => const SearchPatient(routeName: 'eyecheckup'),
     '/viewrecords' : (context) => const SearchPatient(routeName: 'viewrecords'),
     '/editrecords' : (context) => const SearchPatient(routeName: 'editrecords'),
+    '/appointment' : (context) => const SearchPatient(routeName: 'appointment'),
   },
   //home: Home(),
 ));
