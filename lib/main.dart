@@ -29,6 +29,7 @@ void main() async{
     '/registartion' : (context) => const User1(),
     '/eyecheckup' : (context) => const SearchPatient(routeName: 'eyecheckup'),
     '/viewrecords' : (context) => const SearchPatient(routeName: 'viewrecords'),
+    '/editrecords' : (context) => const SearchPatient(routeName: 'editrecords'),
   },
   //home: Home(),
 ));

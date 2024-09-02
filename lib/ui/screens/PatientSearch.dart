@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:optha_doc/ui/screens/EditRecords.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/ViewRecords.dart';
 
@@ -42,7 +43,13 @@ class _SearchPatientState extends State<SearchPatient> {
             context,
             MaterialPageRoute(builder: (context) => Viewrecords(patientId: querySnapshot.docs.first.id)),
           );
-        } else
+        }else if(widget.routeName == 'editrecords') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>
+                EditRecords(patientId: querySnapshot.docs.first.id)),
+          );
+        }else
         {
         }
       } else {
