@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/dashboard': (context) => const Dashboard(),
-        '/registartion': (context) => const User1(),
+        '/registration': (context) => const User1(),
         '/eyecheckup': (context) => const SearchPatient(routeName: 'eyecheckup'),
         '/viewrecords': (context) => const SearchPatient(routeName: 'viewrecords'),
         '/editrecords': (context) => const SearchPatient(routeName: 'editrecords'),
