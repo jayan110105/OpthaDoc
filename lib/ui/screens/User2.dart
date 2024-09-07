@@ -11,9 +11,11 @@ class User2 extends StatefulWidget {
 }
 
 class _User2State extends State<User2> {
+
   String? selectedBifocal;
   String? selectedColor;
   String? selectedRemarks;
+
   double? selectedDVSpR;
   double? selectedDVSpL;
   double? selectedNVSpR;
@@ -33,9 +35,36 @@ class _User2State extends State<User2> {
   String? selectedNVR;
   String? selectedNVL;
 
+  bool isNVR = false;
+
+  double? CorrectedDVSpR;
+  double? CorrectedDVSpL;
+  double? CorrectedNVSpR;
+  double? CorrectedNVSpL;
+  double? CorrectedCylR;
+  double? CorrectedCylL;
+  String? CorrectedSignDVSpR;
+  String? CorrectedSignDVSpL;
+  String? CorrectedSignNVSpR;
+  String? CorrectedSignNVSpL;
+  String? CorrectedSignCylR;
+  String? CorrectedSignCylL;
+  String? CorrectedDVR;
+  String? CorrectedDVL;
+  String? CorrectedDVR2;
+  String? CorrectedDVL2;
+  String? CorrectedNVR;
+  String? CorrectedNVL;
+
+  bool CorrectedisNVR = false;
+
   final TextEditingController _axisRController = TextEditingController();
   final TextEditingController _axisLController = TextEditingController();
   final TextEditingController _ipdController = TextEditingController();
+
+  final TextEditingController _CorrectedAxisRController = TextEditingController();
+  final TextEditingController _CorrectedAxisLController = TextEditingController();
+  final TextEditingController _CorrectedIpdController = TextEditingController();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _isLoading = false;
@@ -67,6 +96,22 @@ class _User2State extends State<User2> {
         'AxisL': _axisLController.text,
         'IPD': _ipdController.text,
         'createdAt': Timestamp.now(),
+        'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
+        'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
+        'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
+        'CorrectedNVSpL': '$CorrectedSignNVSpL$CorrectedNVSpL',
+        'CorrectedCylR': '$CorrectedSignCylR$CorrectedCylR',
+        'CorrectedCylL': '$CorrectedSignCylL$CorrectedCylL',
+        'CorrectedDVR': CorrectedDVR,
+        'CorrectedDVL': CorrectedDVL,
+        'CorrectedDVR2': CorrectedDVR2,
+        'CorrectedDVL2': CorrectedDVL2,
+        'CorrectedNVR': CorrectedNVR,
+        'CorrectedNVL': CorrectedNVL,
+        'CorrectedAxisR': _CorrectedAxisRController.text,
+        'CorrectedAxisL': _CorrectedAxisLController.text,
+        'CorrectedIPD': _CorrectedIpdController.text,
+        'createdAt': Timestamp.now(),
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -89,12 +134,35 @@ class _User2State extends State<User2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User 2"),
+        title: const Text("Eye Checkup"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            GridView.count(
+            crossAxisCount: 3,
+            childAspectRatio: 2,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              const SizedBox(),
+              Center(child: _buildEyeLabel("RIGHT Eye")),
+              Center(child: _buildEyeLabel("LEFT Eye")),
+              ]
+            ),
+            Divider(),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildEyeLabel("Without Aid"),
+              ],
+            ),
+            SizedBox(height: 20,),
             GridView.count(
               crossAxisCount: 3,
               childAspectRatio: 2,
@@ -104,9 +172,6 @@ class _User2State extends State<User2> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                const SizedBox(),
-                Center(child: _buildEyeLabel("RIGHT Eye")),
-                Center(child: _buildEyeLabel("LEFT Eye")),
                 _buildTextLabel('Distance Vision'),
                 _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
                   setState(() {
@@ -126,7 +191,7 @@ class _User2State extends State<User2> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _buildEyeLabel("D.V."),
+                _buildEyeLabel("With Aid"),
               ],
             ),
             SizedBox(height: 20,),
@@ -182,77 +247,31 @@ class _User2State extends State<User2> {
                       selectedDVSpL = newValue;
                     });
                   }),
+                  _buildSignDropdown(selectedSignCylR, (newValue) {
+                    setState(() {
+                      selectedSignCylR = newValue;
+                    });
+                  }),
+                  _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
+                    setState(() {
+                      selectedCylR = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(selectedSignCylL, (newValue) {
+                    setState(() {
+                      selectedSignCylL = newValue;
+                    });
+                  }),
+                  _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
+                    setState(() {
+                      selectedCylL = newValue;
+                    });
+                  }),
                 ]
             ),
-            SizedBox(height: 20,),
-            Divider(),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _buildEyeLabel("N.V."),
-              ],
-            ),
-            SizedBox(height: 20,),
-            GridView.count(
-              crossAxisCount: 3,
-              childAspectRatio: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildTextLabel('Near Vision'),
-                _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
-                  setState(() {
-                    selectedNVR = newValue;
-                  });
-                }),
-                _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
-                  setState(() {
-                    selectedNVL = newValue;
-                  });
-                }),
-              ]
-            ),
             SizedBox(height: 16,),
             GridView.count(
-              crossAxisCount: 4,
-              childAspectRatio: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildSignDropdown(selectedSignNVSpR, (newValue) {
-                  setState(() {
-                    selectedSignNVSpR = newValue;
-                  });
-                }),
-                _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
-                  setState(() {
-                    selectedNVSpR = newValue;
-                  });
-                }),
-                _buildSignDropdown(selectedSignNVSpL, (newValue) {
-                  setState(() {
-                    selectedSignNVSpL = newValue;
-                  });
-                }),
-                _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
-                  setState(() {
-                    selectedNVSpL = newValue;
-                  });
-                }),
-              ]
-            ),
-            SizedBox(height: 16,),
-            Divider(),
-            SizedBox(height: 20,),
-            GridView.count(
-                crossAxisCount: 4,
+                crossAxisCount: 3,
                 childAspectRatio: 2,
                 crossAxisSpacing: 16.0,
                 mainAxisSpacing: 16.0,
@@ -260,42 +279,10 @@ class _User2State extends State<User2> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                _buildSignDropdown(selectedSignCylR, (newValue) {
-                  setState(() {
-                    selectedSignCylR = newValue;
-                  });
-                }),
-                _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
-                  setState(() {
-                    selectedCylR = newValue;
-                  });
-                }),
-                _buildSignDropdown(selectedSignCylL, (newValue) {
-                  setState(() {
-                    selectedSignCylL = newValue;
-                  });
-                }),
-                _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
-                  setState(() {
-                    selectedCylL = newValue;
-                  });
-                }),
-              ]
-            ),
-            SizedBox(height: 16,),
-            GridView.count(
-              crossAxisCount: 3,
-              childAspectRatio: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildTextLabel('Axis'),
-                _buildTextField('R', _axisRController),
-                _buildTextField('L', _axisLController),
-              ]
+                  _buildTextLabel('Axis'),
+                  _buildTextField('R', _axisRController),
+                  _buildTextField('L', _axisLController),
+                ]
             ),
             SizedBox(height: 16,),
             Row(
@@ -325,8 +312,288 @@ class _User2State extends State<User2> {
                 ),
               ],
             ),
-          SizedBox(height: 20,),
             SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Near Vision Required',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Checkbox(
+                  activeColor: Colors.black,
+                  value: isNVR,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      isNVR = value ?? false;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
+            isNVR ? GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildTextLabel('Near Vision'),
+                _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                  setState(() {
+                    selectedNVR = newValue;
+                  });
+                }),
+                _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
+                  setState(() {
+                    selectedNVL = newValue;
+                  });
+                }),
+              ]
+            ): SizedBox.shrink(),
+            isNVR ? SizedBox(height: 16,): SizedBox.shrink(),
+            isNVR ? GridView.count(
+              crossAxisCount: 4,
+              childAspectRatio: 2,
+              crossAxisSpacing: 16.0,
+              mainAxisSpacing: 16.0,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildSignDropdown(selectedSignNVSpR, (newValue) {
+                  setState(() {
+                    selectedSignNVSpR = newValue;
+                  });
+                }),
+                _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
+                  setState(() {
+                    selectedNVSpR = newValue;
+                  });
+                }),
+                _buildSignDropdown(selectedSignNVSpL, (newValue) {
+                  setState(() {
+                    selectedSignNVSpL = newValue;
+                  });
+                }),
+                _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
+                  setState(() {
+                    selectedNVSpL = newValue;
+                  });
+                }),
+              ]
+            ): SizedBox.shrink(),
+            isNVR ? SizedBox(height: 20,): SizedBox.shrink(),
+            Divider(),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildEyeLabel("With Correction"),
+              ],
+            ),
+            SizedBox(height: 20,),
+            GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildTextLabel('Distance Vision'),
+                  _buildDistanceVisionDropdown(CorrectedDVR2, "R", (newValue) {
+                    setState(() {
+                      CorrectedDVR2 = newValue;
+                    });
+                  }),
+                  _buildDistanceVisionDropdown(CorrectedDVL2, "L", (newValue) {
+                    setState(() {
+                      CorrectedDVL2 = newValue;
+                    });
+                  }),
+                ]
+            ),
+            SizedBox(height: 16,),
+            GridView.count(
+                crossAxisCount: 4,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
+                    setState(() {
+                      CorrectedSignDVSpR = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
+                    setState(() {
+                      CorrectedDVSpR = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(CorrectedSignDVSpL, (newValue) {
+                    setState(() {
+                      CorrectedSignDVSpL = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", CorrectedDVSpL, (newValue) {
+                    setState(() {
+                      CorrectedDVSpL = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(CorrectedSignCylR, (newValue) {
+                    setState(() {
+                      CorrectedSignCylR = newValue;
+                    });
+                  }),
+                  _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
+                    setState(() {
+                      CorrectedCylR = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(CorrectedSignCylL, (newValue) {
+                    setState(() {
+                      CorrectedSignCylL = newValue;
+                    });
+                  }),
+                  _buildDropdown(6, "Cyl.", CorrectedCylL, (newValue) {
+                    setState(() {
+                      CorrectedCylL = newValue;
+                    });
+                  }),
+                ]
+            ),
+            SizedBox(height: 16,),
+            GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildTextLabel('Axis'),
+                  _buildTextField('R', _CorrectedAxisRController),
+                  _buildTextField('L', _CorrectedAxisLController),
+                ]
+            ),
+            SizedBox(height: 16,),
+            Row(
+              children: [
+                _buildTextLabel("IPD"),
+                SizedBox(width: 125,),
+                Container(
+                  width: 215,
+                  child: TextField(
+                    controller: _CorrectedIpdController,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      labelText: 'Enter IPD value',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Near Vision Required',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Checkbox(
+                  activeColor: Colors.black,
+                  value: CorrectedisNVR,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      CorrectedisNVR = value ?? false;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20,),
+            CorrectedisNVR ? GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildTextLabel('Near Vision'),
+                  _buildNearVisionDropdown(CorrectedNVR, "R", (newValue) {
+                    setState(() {
+                      CorrectedNVR = newValue;
+                    });
+                  }),
+                  _buildNearVisionDropdown(CorrectedNVL, "L", (newValue) {
+                    setState(() {
+                      CorrectedNVL = newValue;
+                    });
+                  }),
+                ]
+            ): SizedBox.shrink(),
+            CorrectedisNVR ? SizedBox(height: 16,): SizedBox.shrink(),
+            CorrectedisNVR ? GridView.count(
+                crossAxisCount: 4,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildSignDropdown(CorrectedSignNVSpR, (newValue) {
+                    setState(() {
+                      CorrectedSignNVSpR = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", CorrectedNVSpR, (newValue) {
+                    setState(() {
+                      CorrectedNVSpR = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(CorrectedSignNVSpL, (newValue) {
+                    setState(() {
+                      CorrectedSignNVSpL = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", CorrectedNVSpL, (newValue) {
+                    setState(() {
+                      CorrectedNVSpL = newValue;
+                    });
+                  }),
+                ]
+            ): SizedBox.shrink(),
+            CorrectedisNVR ? SizedBox(height: 20,): SizedBox.shrink(),
             Divider(),
             SizedBox(height: 20,),
             _buildEyeLabel("Bifocal"),
