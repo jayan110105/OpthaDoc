@@ -28,10 +28,10 @@ class _User2State extends State<User2> {
   String? selectedSignNVSpL;
   String? selectedSignCylR;
   String? selectedSignCylL;
+  String? DVR;
+  String? DVL;
   String? selectedDVR;
   String? selectedDVL;
-  String? selectedDVR2;
-  String? selectedDVL2;
   String? selectedNVR;
   String? selectedNVL;
 
@@ -51,8 +51,6 @@ class _User2State extends State<User2> {
   String? CorrectedSignCylL;
   String? CorrectedDVR;
   String? CorrectedDVL;
-  String? CorrectedDVR2;
-  String? CorrectedDVL2;
   String? CorrectedNVR;
   String? CorrectedNVL;
 
@@ -70,6 +68,7 @@ class _User2State extends State<User2> {
   bool _isLoading = false;
 
   Future<void> saveOptometryDetails() async {
+
     setState(() {
       _isLoading = true;
     });
@@ -86,16 +85,15 @@ class _User2State extends State<User2> {
         'NVSpL': '$selectedSignNVSpR$selectedNVSpL',
         'CylR': '$selectedSignCylR$selectedCylR',
         'CylL': '$selectedSignCylL$selectedCylL',
-        'DVR': selectedDVR,
-        'DVL': selectedDVL,
-        'DVR2': selectedDVR2,
-        'DVL2': selectedDVL2,
+        'DVR': DVR,
+        'DVL': DVL,
+        'AidedDVR': selectedDVR,
+        'AidedDVL': selectedDVL,
         'NVR': selectedNVR,
         'NVL': selectedNVL,
         'AxisR': _axisRController.text,
         'AxisL': _axisLController.text,
         'IPD': _ipdController.text,
-        'createdAt': Timestamp.now(),
         'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
         'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
         'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
@@ -104,8 +102,6 @@ class _User2State extends State<User2> {
         'CorrectedCylL': '$CorrectedSignCylL$CorrectedCylL',
         'CorrectedDVR': CorrectedDVR,
         'CorrectedDVL': CorrectedDVL,
-        'CorrectedDVR2': CorrectedDVR2,
-        'CorrectedDVL2': CorrectedDVL2,
         'CorrectedNVR': CorrectedNVR,
         'CorrectedNVL': CorrectedNVL,
         'CorrectedAxisR': _CorrectedAxisRController.text,
@@ -117,9 +113,13 @@ class _User2State extends State<User2> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Optometry details saved successfully!')),
       );
+    } on FirebaseException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Firebase error: ${e.message}')),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save optometry details: $e')),
+        SnackBar(content: Text('Unexpected error: $e')),
       );
     } finally {
       setState(() {
@@ -173,14 +173,14 @@ class _User2State extends State<User2> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildTextLabel('Distance Vision'),
-                _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
+                _buildDistanceVisionDropdown(DVR, "R", (newValue) {
                   setState(() {
-                    selectedDVR = newValue;
+                    DVR = newValue;
                   });
                 }),
-                _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
+                _buildDistanceVisionDropdown(DVL, "L", (newValue) {
                   setState(() {
-                    selectedDVL = newValue;
+                    DVL = newValue;
                   });
                 }),
               ],
@@ -205,14 +205,14 @@ class _User2State extends State<User2> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildTextLabel('Distance Vision'),
-                _buildDistanceVisionDropdown(selectedDVR2, "R", (newValue) {
+                _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
                   setState(() {
-                    selectedDVR2 = newValue;
+                    selectedDVR = newValue;
                   });
                 }),
-                _buildDistanceVisionDropdown(selectedDVL2, "L", (newValue) {
+                _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
                   setState(() {
-                    selectedDVL2 = newValue;
+                    selectedDVL = newValue;
                   });
                 }),
               ]
@@ -409,14 +409,14 @@ class _User2State extends State<User2> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(CorrectedDVR2, "R", (newValue) {
+                  _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
                     setState(() {
-                      CorrectedDVR2 = newValue;
+                      CorrectedDVR = newValue;
                     });
                   }),
-                  _buildDistanceVisionDropdown(CorrectedDVL2, "L", (newValue) {
+                  _buildDistanceVisionDropdown(CorrectedDVL, "L", (newValue) {
                     setState(() {
-                      CorrectedDVL2 = newValue;
+                      CorrectedDVL = newValue;
                     });
                   }),
                 ]
@@ -757,6 +757,17 @@ class _User2State extends State<User2> {
     );
   }
 
+  _validateAxis(String value) {
+    if (value.isEmpty) {
+      return false;
+    }
+    final n = num.tryParse(value);
+    if (n == null) {
+      return false;
+    }
+    return n >= 0 && n <= 180;
+  }
+
   Widget _buildTextField(String hint, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -767,6 +778,7 @@ class _User2State extends State<User2> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: hint,
+              errorText: _validateAxis(controller.text) ? null : 'Invalid input',
             ),
           ),
         ),
