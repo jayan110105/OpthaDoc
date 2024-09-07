@@ -17,6 +17,8 @@ class _User1State extends State<User1> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _aadhaarController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _parentController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   String? _selectedGender;
   bool _isLoading = false;
@@ -53,7 +55,9 @@ class _User1State extends State<User1> {
         'age': _ageController.text.trim(),
         'gender': _selectedGender,
         'aadhaarNumber': _aadhaarController.text.trim().replaceAll(' ', ''),
+        'parent/spouseName': _parentController.text.trim(),
         'phoneNumber': _phoneController.text.trim(),
+        'address': _addressController.text.trim(),
         'imageUrl': imageUrl,
         'createdAt': Timestamp.now(),
       });
@@ -286,7 +290,11 @@ class _User1State extends State<User1> {
               const SizedBox(height: 20),
               _buildTextField('Aadhar Card No.', _aadhaarController),
               const SizedBox(height: 20),
+              _buildTextField('Parent/Spouse Name', _parentController),
+              const SizedBox(height: 20),
               _buildTextField('Phone No.', _phoneController, prefixText: '+91 '),
+              const SizedBox(height: 20),
+              _buildTextArea('Address', _addressController),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -323,6 +331,30 @@ class _User1State extends State<User1> {
       cursorColor: Colors.black,
       controller: controller,
       decoration: InputDecoration(
+        labelStyle: TextStyle(
+          color: Colors.black,
+        ),
+        labelText: labelText,
+        prefixText: prefixText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextArea(String labelText, TextEditingController controller, {String? prefixText}) {
+    return TextField(
+      cursorColor: Colors.black,
+      controller: controller,
+      maxLines: 5, // Set maxLines to a higher value for a text area
+      decoration: InputDecoration(
+        alignLabelWithHint: true,
         labelStyle: TextStyle(
           color: Colors.black,
         ),

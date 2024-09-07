@@ -3,8 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+
+  String patientId = '';
+
+  TextEditingController _patientIdController = TextEditingController();
+
+  final FocusNode _focusNode = FocusNode();
 
   Future<Map<String, String>> _getUserDetails() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -35,6 +47,34 @@ class Dashboard extends StatelessWidget {
   Future<void> _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacementNamed(context, '/login');
+  }
+
+  Future<void> _checkPatientId(BuildContext context) async {
+    String id = _patientIdController.text;
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('patients')
+          .where('aadhaarNumber', isEqualTo: id)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Patient ID $id found!'), backgroundColor: Colors.green),
+        );
+        setState(() {
+          patientId = id;
+        });
+        _focusNode.unfocus();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Patient ID $id not found!'), backgroundColor: Colors.red),
+        );
+      }
+    } catch (e) {
+      Logger().e('Error checking patient ID: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error checking patient ID: $e'), backgroundColor: Colors.red),
+      );
+    }
   }
 
   @override
@@ -70,43 +110,108 @@ class Dashboard extends StatelessWidget {
   }
 
   Widget _buildDashboardContent(BuildContext context, String role, String username, String greeting) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: [
-          Container(
-            color: Colors.black,
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '$greeting, $username',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Container(
+              color: Colors.black,
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '$greeting, $username',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
+                  _buildMenuAnchor(context),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
-                _buildMenuAnchor(context),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Container(
-              padding: EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[200], // Background color
-                borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _patientIdController,
+                        focusNode: _focusNode,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          hintText: 'Enter Patient ID',  // Placeholder text
+                          hintStyle: TextStyle(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),  // Spacing between TextField and Button\
+                    // Status Button
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_focusNode.hasFocus) {
+                            _checkPatientId(context);
+                          } else {
+                            _focusNode.requestFocus();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.grey[700],
+                          backgroundColor: Colors.grey[200], // Button text color
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              patientId == '' ? 'Confirm':'Change',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Center(
-                child: _buildDashboardGrid(context, role),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200], // Background color
+                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                ),
+                child: Center(
+                  child: _buildDashboardGrid(context, role),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
