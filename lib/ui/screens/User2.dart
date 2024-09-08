@@ -125,7 +125,6 @@ class _User2State extends State<User2> {
       setState(() {
         _isLoading = false;
         Navigator.pop(context);
-        Navigator.pop(context);
       });
     }
   }

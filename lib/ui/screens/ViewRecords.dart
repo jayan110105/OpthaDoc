@@ -105,15 +105,14 @@ class Viewrecords extends StatelessWidget {
                         Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['DVR'] ?? 'N/A')),
-                            SizedBox(width: 16),
                             Expanded(child: _buildCard('Left', data['DVL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['DVR'] ?? 'N/A')),
                           ],
                         ),
                       ],
                     ),
                   ),
-
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
@@ -130,54 +129,54 @@ class Viewrecords extends StatelessWidget {
                         Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['DVR2'] ?? 'N/A')),
+                            Expanded(child: _buildCard('Left', data['AidedDVL'] ?? 'N/A')),
                             SizedBox(width: 16),
-                            Expanded(child: _buildCard('Left', data['DVL2'] ?? 'N/A')),
+                            Expanded(child: _buildCard('Right', data['AidedDVR'] ?? 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
                         Text('D.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['DVSpR'] ?? 'N/A')),
-                            SizedBox(width: 16),
                             Expanded(child: _buildCard('Left', data['DVSpL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['DVSpR'] ?? 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
                         Text('Near Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['NVR'] ?? 'N/A')),
-                            SizedBox(width: 16),
                             Expanded(child: _buildCard('Left', data['NVL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['NVR'] ?? 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
                         Text('N.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['NVSpR'] ?? 'N/A')),
+                            Expanded(child: _buildCard('Left', data['NVSpL'] == 'nullnull' ? 'N/A': data['NVSpL'])),
                             SizedBox(width: 16),
-                            Expanded(child: _buildCard('Left', data['NVSpL'] ?? 'N/A')),
+                            Expanded(child: _buildCard('Right', data['NVSpR'] == 'nullnull' ?'N/A': data['NVSpR'])),
                           ],
                         ),
                         SizedBox(height: 16),
                         Text('Cyl', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['CylR'] ?? 'N/A')),
-                            SizedBox(width: 16),
                             Expanded(child: _buildCard('Left', data['CylL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CylR'] ?? 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
                         Text('Axis', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Right', data['AxisR']+"°" ?? 'N/A')),
-                            SizedBox(width: 16),
                             Expanded(child: _buildCard('Left', data['AxisL']+"°" ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['AxisR']+"°" ?? 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
@@ -185,6 +184,78 @@ class Viewrecords extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(height: 10),
+                  Divider(),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.grey[200],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('With Correction', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedDVL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedDVR'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('D.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedDVSpL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedDVSpR'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Near Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedNVL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedNVR'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('N.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedNVSpL'] == 'nullnull' ? 'N/A': data['CorrectedNVSpL'])),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedNVSpR'] == 'nullnull' ?'N/A': data['CorrectedNVSpR'])),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Cyl', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedCylL'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedCylR'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Axis', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Left', data['CorrectedAxisL']+"°" ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Right', data['CorrectedAxisR']+"°" ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        _buildCard('I.P.D.', data['CorrectedIPD'] ?? 'N/A'),
+                      ],
+                    ),
+                  ),
+
                   SizedBox(height: 10),
                   Divider(),
                   SizedBox(height: 10),
@@ -204,7 +275,6 @@ class Viewrecords extends StatelessWidget {
                       ],
                     ),
                   ),
-
                 ],
               ),
             );
