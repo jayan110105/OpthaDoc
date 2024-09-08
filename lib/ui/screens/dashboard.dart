@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:optha_doc/ui/screens/EditRecords.dart';
+import 'package:optha_doc/ui/screens/User2.dart';
+import 'package:optha_doc/ui/screens/ViewRecords.dart';
+import 'package:optha_doc/ui/screens/appointment.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -275,19 +279,33 @@ class _DashboardState extends State<Dashboard> {
         }),
         if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
           _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
-            Navigator.pushNamed(context, '/eyecheckup');
+            // Navigator.pushNamed(context, '/eyecheckup');
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => User2(patientId: patientId))
+            );
           }),
         if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
           _buildDashboardButton(Icons.assignment, 'View Records', () {
-            Navigator.pushNamed(context, '/viewrecords');
+            // Navigator.pushNamed(context, '/viewrecords');
+            Navigator.push(
+              context,
+                MaterialPageRoute(builder: (context) => Viewrecords(patientId: patientId))
+            );
           }),
         if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
           _buildDashboardButton(Icons.edit, 'Edit Records', () {
-            Navigator.pushNamed(context, '/editrecords');
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditRecords(patientId: patientId))
+            );
           }),
         if (role == 'Senior Doctor/ Consultant')
           _buildDashboardButton(Icons.event, 'Appointment', () {
-            Navigator.pushNamed(context, '/appointment');
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Appointment(patientId: patientId))
+            );
           }),
       ],
     );

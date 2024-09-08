@@ -774,12 +774,22 @@ class _User2State extends State<User2> {
       child: SizedBox(
           width: 80, // Use SizedBox instead of Container to enforce fixed width
           child: TextField(
+            cursorColor: Colors.black,
             controller: controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: hint,
-              errorText: _validateAxis(controller.text) ? null : 'Invalid input',
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.black
+                ),
+              ),
             ),
+            onChanged: (value) {
+              setState(() {
+                _validateAxis(value);
+              });
+            },
           ),
         ),
     );

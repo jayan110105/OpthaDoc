@@ -8,14 +8,28 @@ class Viewrecords extends StatelessWidget {
 
   Future<Map<String, dynamic>?> fetchEyeCheckupDetails() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      QuerySnapshot optometrySnapshot = await FirebaseFirestore.instance
           .collection('optometryDetails')
           .where('patientId', isEqualTo: patientId)
           .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot doc = querySnapshot.docs.first;
-        return doc.data() as Map<String, dynamic>?;
+      // Fetch patient details
+      QuerySnapshot patientSnapshot = await FirebaseFirestore.instance
+          .collection('patients')
+          .where('aadhaarNumber', isEqualTo: patientId)
+          .get();
+
+      if (optometrySnapshot.docs.isNotEmpty && patientSnapshot.docs.isNotEmpty) {
+        DocumentSnapshot optometryDoc = optometrySnapshot.docs.first;
+        DocumentSnapshot patientDoc = patientSnapshot.docs.first;
+
+        // Combine data from both collections
+        Map<String, dynamic> combinedData = {
+          ...optometryDoc.data() as Map<String, dynamic>,
+          ...patientDoc.data() as Map<String, dynamic>,
+        };
+
+        return combinedData;
       } else {
         return null;
       }
@@ -35,7 +49,7 @@ class Viewrecords extends StatelessWidget {
         future: fetchEyeCheckupDetails(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Colors.black,));
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data == null) {
@@ -46,60 +60,151 @@ class Viewrecords extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: ListView(
                 children: [
-                  _buildCard('Patient ID', patientId),
                   Row(
                     children: [
-                      Expanded(child: _buildCard('DVR', data['DVR'] ?? 'N/A')),
+                      data['imageUrl'] != null && data['imageUrl'].isNotEmpty
+                          ? CircleAvatar(
+                        radius: 45,
+                        backgroundImage: NetworkImage(data['imageUrl']),
+                        backgroundColor: Colors.transparent,
+                      )
+                          : CircleAvatar(
+                        radius: 45,
+                        backgroundColor: Colors.grey,
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
                       SizedBox(width: 16),
-                      Expanded(child: _buildCard('DVL', data['DVL'] ?? 'N/A')),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(data['name']??'John Doe', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                          Text('Age : ${data['age'] ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                          Text('ID: $patientId', style: TextStyle( fontSize: 18)),
+                        ],
+                      )
                     ],
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('DVR2', data['DVR2'] ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('DVL2', data['DVL2'] ?? 'N/A')),
-                    ],
+                  //_buildCard('Patient ID', patientId),
+                  SizedBox(height: 10),
+                  Divider(),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.grey[200],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Without Aid', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['DVR'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['DVL'] ?? 'N/A')),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('DVSpR', data['DVSpR'] ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('DVSpL', data['DVSpL'] ?? 'N/A')),
-                    ],
+
+                  SizedBox(height: 10),
+                  Divider(),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.grey[200],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('With Aid', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['DVR2'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['DVL2'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('D.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['DVSpR'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['DVSpL'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Near Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['NVR'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['NVL'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('N.V. Sphere', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['NVSpR'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['NVSpL'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Cyl', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['CylR'] ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['CylL'] ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        Text('Axis', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+                        Row(
+                          children: [
+                            Expanded(child: _buildCard('Right', data['AxisR']+"°" ?? 'N/A')),
+                            SizedBox(width: 16),
+                            Expanded(child: _buildCard('Left', data['AxisL']+"°" ?? 'N/A')),
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        _buildCard('I.P.D.', data['IPD'] ?? 'N/A'),
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('NVR', data['NVR'] ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('NVL', data['NVL'] ?? 'N/A')),
-                    ],
+                  SizedBox(height: 10),
+                  Divider(),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.grey[200],
+                    ),
+                    child: Column(
+                      children: [
+                        _buildCard('Bifocal', data['Bifocal'] ?? 'N/A'),
+                        SizedBox(height: 2),
+                        _buildCard('Color', data['Color'] ?? 'N/A'),
+                        SizedBox(height: 2),
+                        _buildCard('Remarks', data['Remarks'] ?? 'N/A'),
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('NVSpR', data['NVSpR'] ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('NVSpL', data['NVSpL'] ?? 'N/A')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('CylR', data['CylR'] ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('CylL', data['CylL'] ?? 'N/A')),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(child: _buildCard('AxisR', data['AxisR']+"°" ?? 'N/A')),
-                      SizedBox(width: 16),
-                      Expanded(child: _buildCard('AxisL', data['AxisL']+"°" ?? 'N/A')),
-                    ],
-                  ),
-                  _buildCard('IPD', data['IPD'] ?? 'N/A'),
-                  _buildCard('Bifocal', data['Bifocal'] ?? 'N/A'),
-                  _buildCard('Color', data['Color'] ?? 'N/A'),
-                  _buildCard('Remarks', data['Remarks'] ?? 'N/A'),
+
                 ],
               ),
             );
@@ -111,6 +216,7 @@ class Viewrecords extends StatelessWidget {
 
   Widget _buildCard(String title, String subtitle) {
     return Card(
+      color: Colors.black87,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         title: Text(
@@ -118,12 +224,14 @@ class Viewrecords extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
+            color: Colors.white,
           ),
         ),
         subtitle: Text(
           subtitle,
           style: TextStyle(
             fontSize: 14,
+            color: Colors.white,
           ),
         ),
       ),
