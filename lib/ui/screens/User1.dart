@@ -296,6 +296,8 @@ class _User1State extends State<User1> {
               const SizedBox(height: 20),
               _buildTextArea('Address', _addressController),
               const SizedBox(height: 20),
+              _buildTextArea('Chief Complaint', _addressController),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: _buildTextButton(

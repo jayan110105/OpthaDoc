@@ -63,6 +63,7 @@ class _User2State extends State<User2> {
   final TextEditingController _CorrectedAxisRController = TextEditingController();
   final TextEditingController _CorrectedAxisLController = TextEditingController();
   final TextEditingController _CorrectedIpdController = TextEditingController();
+  final TextEditingController _BriefComplaintController = TextEditingController();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _isLoading = false;
@@ -94,6 +95,7 @@ class _User2State extends State<User2> {
         'AxisR': _axisRController.text,
         'AxisL': _axisLController.text,
         'IPD': _ipdController.text,
+        'BriefComplaint': _BriefComplaintController.text,
         'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
         'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
         'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
@@ -193,7 +195,35 @@ class _User2State extends State<User2> {
                 _buildEyeLabel("With Aid"),
               ],
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 16,),
+            Row(
+              children: [
+                _buildTextLabel("Brief Complaint"),
+                SizedBox(width: 45,),
+                Container(
+                  width: 215,
+                  child: TextField(
+                    controller: _BriefComplaintController,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      labelText: 'Enter Complaint',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16,),
             GridView.count(
               crossAxisCount: 3,
               childAspectRatio: 2,

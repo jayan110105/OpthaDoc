@@ -67,6 +67,8 @@ class _EditRecordsState extends State<EditRecords> {
   String? CorrectedNVR;
   String? CorrectedNVL;
 
+  final TextEditingController _BriefComplaintController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -132,6 +134,8 @@ class _EditRecordsState extends State<EditRecords> {
           CorrectedDVL = data['CorrectedDVL'];
           CorrectedNVR = data['CorrectedNVR'] ?? null;
           CorrectedNVL = data['CorrectedNVL'] ?? null;
+          _BriefComplaintController.text = data['BriefComplaint'] ?? null;
+
           if(data['CorrectedNVR'] != null){
             CorrectedisNVR = true;
           }
@@ -185,6 +189,7 @@ class _EditRecordsState extends State<EditRecords> {
             'AxisR': _axisRController.text,
             'AxisL': _axisLController.text,
             'IPD': _ipdController.text,
+            'BriefComplaint': _BriefComplaintController.text,
             'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
             'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
             'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
@@ -284,6 +289,34 @@ class _EditRecordsState extends State<EditRecords> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   _buildEyeLabel("With Aid"),
+                ],
+              ),
+              SizedBox(height: 16,),
+              Row(
+                children: [
+                  _buildTextLabel("Brief Complaint"),
+                  SizedBox(width: 45,),
+                  Container(
+                    width: 215,
+                    child: TextField(
+                      controller: _BriefComplaintController,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        labelStyle: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        hintText: 'Enter Complaint',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 20,),

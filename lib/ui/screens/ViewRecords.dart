@@ -126,6 +126,9 @@ class Viewrecords extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('With Aid', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        SizedBox(height: 16),
+                        _buildCard('Brief Complaint', data['BriefComplaint'] ?? 'N/A'),
+                        SizedBox(height: 16),
                         Text('Distance Vision', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
