@@ -20,9 +20,14 @@ class _EditRecordsState extends State<EditRecords> {
   final TextEditingController _axisLController = TextEditingController();
   final TextEditingController _ipdController = TextEditingController();
 
+  final TextEditingController _CorrectedAxisRController = TextEditingController();
+  final TextEditingController _CorrectedAxisLController = TextEditingController();
+  final TextEditingController _CorrectedIpdController = TextEditingController();
+
   String? selectedBifocal;
   String? selectedColor;
   String? selectedRemarks;
+
   double? selectedDVSpR;
   double? selectedDVSpL;
   double? selectedNVSpR;
@@ -35,12 +40,32 @@ class _EditRecordsState extends State<EditRecords> {
   String? selectedSignNVSpL;
   String? selectedSignCylR;
   String? selectedSignCylL;
+  String? DVR;
+  String? DVL;
   String? selectedDVR;
   String? selectedDVL;
-  String? selectedDVR2;
-  String? selectedDVL2;
   String? selectedNVR;
   String? selectedNVL;
+
+  bool isNVR = false;
+  bool CorrectedisNVR = false;
+
+  double? CorrectedDVSpR;
+  double? CorrectedDVSpL;
+  double? CorrectedNVSpR;
+  double? CorrectedNVSpL;
+  double? CorrectedCylR;
+  double? CorrectedCylL;
+  String? CorrectedSignDVSpR;
+  String? CorrectedSignDVSpL;
+  String? CorrectedSignNVSpR;
+  String? CorrectedSignNVSpL;
+  String? CorrectedSignCylR;
+  String? CorrectedSignCylL;
+  String? CorrectedDVR;
+  String? CorrectedDVL;
+  String? CorrectedNVR;
+  String? CorrectedNVL;
 
   @override
   void initState() {
@@ -68,22 +93,49 @@ class _EditRecordsState extends State<EditRecords> {
           selectedRemarks = data['Remarks'];
           selectedDVSpR = double.tryParse(data['DVSpR'].substring(1) ?? '');
           selectedDVSpL = double.tryParse(data['DVSpL'].substring(1) ?? '');
-          selectedNVSpR = double.tryParse(data['NVSpR'].substring(1) ?? '');
-          selectedNVSpL = double.tryParse(data['NVSpL'].substring(1) ?? '');
+          selectedNVSpR = data['NVSpR'] == "nullnull" ? null : double.tryParse(data['NVSpR'].substring(1));
+          selectedNVSpL = data['NVSpL'] == "nullnull" ? null : double.tryParse(data['NVSpL'].substring(1));
           selectedCylR = double.tryParse(data['CylR'].substring(1) ?? '');
           selectedCylL = double.tryParse(data['CylL'].substring(1) ?? '');
           selectedSignDVSpR = data['DVSpR'].substring(0, 1);
           selectedSignDVSpL = data['DVSpL'].substring(0, 1);
-          selectedSignNVSpR = data['NVSpR'].substring(0, 1);
-          selectedSignNVSpL = data['NVSpL'].substring(0, 1);
+          selectedSignNVSpR = data['NVSpR'] == "nullnull" ? null : data['NVSpR'].substring(0, 1);
+          selectedSignNVSpL = data['NVSpR'] == "nullnull" ? null : data['NVSpL'].substring(0, 1);
           selectedSignCylR = data['CylR'].substring(0, 1);
           selectedSignCylL = data['CylL'].substring(0, 1);
-          selectedDVR = data['DVR'];
-          selectedDVL = data['DVL'];
-          selectedDVR2 = data['DVR2'];
-          selectedDVL2 = data['DVL2'];
-          selectedNVR = data['NVR'];
-          selectedNVL = data['NVL'];
+          DVR = data['DVR'] ;
+          DVL = data['DVL'] ;
+          selectedDVR = data['AidedDVR'];
+          selectedDVL = data['AidedDVL'];
+          selectedNVR = data['NVR'] ?? null;
+          selectedNVL = data['NVL'] ?? null;
+          if(data['NVR'] != null){
+            isNVR = true;
+          }
+
+          _CorrectedAxisRController.text = data['CorrectedAxisR'] ?? '';
+          _CorrectedAxisLController.text = data['CorrectedAxisL'] ?? '';
+          _CorrectedIpdController.text = data['CorrectedIPD'] ?? '';
+          CorrectedDVSpR = double.tryParse(data['CorrectedDVSpR'].substring(1) ?? '');
+          CorrectedDVSpL = double.tryParse(data['CorrectedDVSpL'].substring(1) ?? '');
+          CorrectedNVSpR = data['CorrectedNVSpR'] == "nullnull" ? null : double.tryParse(data['CorrectedNVSpR'].substring(1));
+          CorrectedNVSpL = data['CorrectedNVSpL'] == "nullnull" ? null : double.tryParse(data['CorrectedNVSpL'].substring(1));
+          CorrectedCylR = double.tryParse(data['CorrectedCylR'].substring(1) ?? '');
+          CorrectedCylL = double.tryParse(data['CorrectedCylL'].substring(1) ?? '');
+          CorrectedSignDVSpR = data['CorrectedDVSpR'].substring(0, 1);
+          CorrectedSignDVSpL = data['CorrectedDVSpL'].substring(0, 1);
+          CorrectedSignNVSpR = data['CorrectedNVSpR'] == "nullnull" ? null : data['CorrectedNVSpR'].substring(0, 1);
+          CorrectedSignNVSpL = data['CorrectedNVSpR'] == "nullnull" ? null : data['CorrectedNVSpL'].substring(0, 1);
+          CorrectedSignCylR = data['CorrectedCylR'].substring(0, 1);
+          CorrectedSignCylL = data['CorrectedCylL'].substring(0, 1);
+          CorrectedDVR = data['CorrectedDVR'];
+          CorrectedDVL = data['CorrectedDVL'];
+          CorrectedNVR = data['CorrectedNVR'] ?? null;
+          CorrectedNVL = data['CorrectedNVL'] ?? null;
+          if(data['CorrectedNVR'] != null){
+            CorrectedisNVR = true;
+          }
+
           _isFetching = false;
         });
       } else {
@@ -124,15 +176,28 @@ class _EditRecordsState extends State<EditRecords> {
             'NVSpL': '$selectedSignNVSpR$selectedNVSpL',
             'CylR': '$selectedSignCylR$selectedCylR',
             'CylL': '$selectedSignCylL$selectedCylL',
-            'DVR': selectedDVR,
-            'DVL': selectedDVL,
-            'DVR2': selectedDVR2,
-            'DVL2': selectedDVL2,
+            'DVR': DVR,
+            'DVL': DVL,
+            'AidedDVR': selectedDVR,
+            'AidedDVL': selectedDVL,
             'NVR': selectedNVR,
             'NVL': selectedNVL,
             'AxisR': _axisRController.text,
             'AxisL': _axisLController.text,
             'IPD': _ipdController.text,
+            'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
+            'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
+            'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
+            'CorrectedNVSpL': '$CorrectedSignNVSpL$CorrectedNVSpL',
+            'CorrectedCylR': '$CorrectedSignCylR$CorrectedCylR',
+            'CorrectedCylL': '$CorrectedSignCylL$CorrectedCylL',
+            'CorrectedDVR': CorrectedDVR,
+            'CorrectedDVL': CorrectedDVL,
+            'CorrectedNVR': CorrectedNVR,
+            'CorrectedNVL': CorrectedNVL,
+            'CorrectedAxisR': _CorrectedAxisRController.text,
+            'CorrectedAxisL': _CorrectedAxisLController.text,
+            'CorrectedIPD': _CorrectedIpdController.text,
             'createdAt': Timestamp.now(),
           });
           ScaffoldMessenger.of(context).showSnackBar(
@@ -180,18 +245,37 @@ class _EditRecordsState extends State<EditRecords> {
                   const SizedBox(),
                   Center(child: _buildEyeLabel("RIGHT Eye")),
                   Center(child: _buildEyeLabel("LEFT Eye")),
-                  _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
-                    setState(() {
-                      selectedDVR = newValue;
-                    });
-                  }),
-                  _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
-                    setState(() {
-                      selectedDVL = newValue;
-                    });
-                  }),
                 ],
+              ),
+              Divider(),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildEyeLabel("Without Aid"),
+                ],
+              ),
+              GridView.count(
+                crossAxisCount: 3,
+                childAspectRatio: 2,
+                crossAxisSpacing: 16.0,
+                mainAxisSpacing: 16.0,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  _buildTextLabel('Distance Vision'),
+                  _buildDistanceVisionDropdown(DVR, "R", (newValue) {
+                    setState(() {
+                      DVR = newValue;
+                    });
+                  }),
+                  _buildDistanceVisionDropdown(DVL, "L", (newValue) {
+                    setState(() {
+                      DVL = newValue;
+                    });
+                  }),
+                ]
               ),
               SizedBox(height: 20,),
               Divider(),
@@ -199,7 +283,7 @@ class _EditRecordsState extends State<EditRecords> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _buildEyeLabel("D.V."),
+                  _buildEyeLabel("With Aid"),
                 ],
               ),
               SizedBox(height: 20,),
@@ -213,14 +297,14 @@ class _EditRecordsState extends State<EditRecords> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildTextLabel('Distance Vision'),
-                    _buildDistanceVisionDropdown(selectedDVR2, "R", (newValue) {
+                    _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
                       setState(() {
-                        selectedDVR2 = newValue;
+                        selectedDVR = newValue;
                       });
                     }),
-                    _buildDistanceVisionDropdown(selectedDVL2, "L", (newValue) {
+                    _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
                       setState(() {
-                        selectedDVL2 = newValue;
+                        selectedDVL = newValue;
                       });
                     }),
                   ]
@@ -255,84 +339,6 @@ class _EditRecordsState extends State<EditRecords> {
                         selectedDVSpL = newValue;
                       });
                     }),
-                  ]
-              ),
-              SizedBox(height: 20,),
-              Divider(),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  _buildEyeLabel("N.V."),
-                ],
-              ),
-              SizedBox(height: 20,),
-              GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildTextLabel('Near Vision'),
-                    _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
-                      setState(() {
-                        selectedNVR = newValue;
-                      });
-                    }),
-                    _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
-                      setState(() {
-                        selectedNVL = newValue;
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildSignDropdown(selectedSignNVSpR, (newValue) {
-                      setState(() {
-                        selectedSignNVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
-                      setState(() {
-                        selectedNVSpR = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(selectedSignNVSpL, (newValue) {
-                      setState(() {
-                        selectedSignNVSpL = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
-                      setState(() {
-                        selectedNVSpL = newValue;
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              Divider(),
-              SizedBox(height: 20,),
-              GridView.count(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
                     _buildSignDropdown(selectedSignCylR, (newValue) {
                       setState(() {
                         selectedSignCylR = newValue;
@@ -355,7 +361,7 @@ class _EditRecordsState extends State<EditRecords> {
                     }),
                   ]
               ),
-              SizedBox(height: 16,),
+              SizedBox(height: 20,),
               GridView.count(
                   crossAxisCount: 3,
                   childAspectRatio: 2,
@@ -389,6 +395,277 @@ class _EditRecordsState extends State<EditRecords> {
                 ],
               ),
               SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Near Vision Required',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Checkbox(
+                    activeColor: Colors.black,
+                    value: isNVR,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isNVR = value ?? false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              isNVR ? SizedBox(height: 20,) : SizedBox.shrink(),
+              isNVR ? GridView.count(
+                  crossAxisCount: 3,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildTextLabel('Near Vision'),
+                    _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                      setState(() {
+                        selectedNVR = newValue;
+                      });
+                    }),
+                    _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
+                      setState(() {
+                        selectedNVL = newValue;
+                      });
+                    }),
+                  ]
+              ) : SizedBox.shrink(),
+              isNVR ? SizedBox(height: 16,) : SizedBox.shrink(),
+              isNVR ? GridView.count(
+                  crossAxisCount: 4,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildSignDropdown(selectedSignNVSpR, (newValue) {
+                      setState(() {
+                        selectedSignNVSpR = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
+                      setState(() {
+                        selectedNVSpR = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(selectedSignNVSpL, (newValue) {
+                      setState(() {
+                        selectedSignNVSpL = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
+                      setState(() {
+                        selectedNVSpL = newValue;
+                      });
+                    }),
+                  ]
+              ): SizedBox.shrink(),
+              SizedBox(height: 16,),
+              Divider(),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildEyeLabel("With Correction"),
+                ],
+              ),
+              SizedBox(height: 20,),
+              GridView.count(
+                  crossAxisCount: 3,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildTextLabel('Distance Vision'),
+                    _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
+                      setState(() {
+                        CorrectedDVR = newValue;
+                      });
+                    }),
+                    _buildDistanceVisionDropdown(CorrectedDVL, "L", (newValue) {
+                      setState(() {
+                        CorrectedDVL = newValue;
+                      });
+                    }),
+                  ]
+              ),
+              SizedBox(height: 16,),
+              GridView.count(
+                  crossAxisCount: 4,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
+                      setState(() {
+                        CorrectedSignDVSpR = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
+                      setState(() {
+                        CorrectedDVSpR = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(CorrectedSignDVSpL, (newValue) {
+                      setState(() {
+                        CorrectedSignDVSpL = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", CorrectedDVSpL, (newValue) {
+                      setState(() {
+                        CorrectedDVSpL = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(CorrectedSignCylR, (newValue) {
+                      setState(() {
+                        CorrectedSignCylR = newValue;
+                      });
+                    }),
+                    _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
+                      setState(() {
+                        CorrectedCylR = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(CorrectedSignCylL, (newValue) {
+                      setState(() {
+                        CorrectedSignCylL = newValue;
+                      });
+                    }),
+                    _buildDropdown(6, "Cyl.", CorrectedCylL, (newValue) {
+                      setState(() {
+                        CorrectedCylL = newValue;
+                      });
+                    }),
+                  ]
+              ),
+              SizedBox(height: 20,),
+              GridView.count(
+                  crossAxisCount: 3,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildTextLabel('Axis'),
+                    _buildTextField('R', _CorrectedAxisRController),
+                    _buildTextField('L', _CorrectedAxisLController),
+                  ]
+              ),
+              SizedBox(height: 16,),
+              Row(
+                children: [
+                  _buildTextLabel("IPD"),
+                  SizedBox(width: 125,),
+                  Container(
+                    width: 215,
+                    child: TextField(
+                      controller: _CorrectedIpdController,
+                      cursorColor: Colors.black,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'IPD',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Near Vision Required',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Checkbox(
+                    activeColor: Colors.black,
+                    value: CorrectedisNVR,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        CorrectedisNVR = value ?? false;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              CorrectedisNVR ? SizedBox(height: 20,) : SizedBox.shrink(),
+              CorrectedisNVR ? GridView.count(
+                  crossAxisCount: 3,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildTextLabel('Near Vision'),
+                    _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                      setState(() {
+                        selectedNVR = newValue;
+                      });
+                    }),
+                    _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
+                      setState(() {
+                        selectedNVL = newValue;
+                      });
+                    }),
+                  ]
+              ) : SizedBox.shrink(),
+              CorrectedisNVR ? SizedBox(height: 16,) : SizedBox.shrink(),
+              CorrectedisNVR ? GridView.count(
+                  crossAxisCount: 4,
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    _buildSignDropdown(selectedSignNVSpR, (newValue) {
+                      setState(() {
+                        selectedSignNVSpR = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
+                      setState(() {
+                        selectedNVSpR = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(selectedSignNVSpL, (newValue) {
+                      setState(() {
+                        selectedSignNVSpL = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
+                      setState(() {
+                        selectedNVSpL = newValue;
+                      });
+                    }),
+                  ]
+              ): SizedBox.shrink(),
+              SizedBox(height: 16,),
               Divider(),
               SizedBox(height: 20,),
               _buildEyeLabel("Bifocal"),
