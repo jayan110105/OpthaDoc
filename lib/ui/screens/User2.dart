@@ -209,7 +209,7 @@ class _User2State extends State<User2> {
                       labelStyle: const TextStyle(
                         color: Colors.black,
                       ),
-                      labelText: 'Enter Complaint',
+                      hintText: 'Enter Complaint',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

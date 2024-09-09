@@ -2,31 +2,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Viewrecords extends StatelessWidget {
-  final String patientId;
+  final String docID;
 
-  const Viewrecords({required this.patientId, super.key});
+  const Viewrecords({required this.docID, super.key});
 
   Future<Map<String, dynamic>?> fetchEyeCheckupDetails() async {
     try {
-      QuerySnapshot optometrySnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot optometrySnapshot = await FirebaseFirestore.instance
           .collection('optometryDetails')
-          .where('patientId', isEqualTo: patientId)
+          .doc(docID)
           .get();
 
       // Fetch patient details
-      QuerySnapshot patientSnapshot = await FirebaseFirestore.instance
+      if (!optometrySnapshot.exists) {
+        return null;
+      }
+
+      // Extract patientId from optometry details
+      String patientId = optometrySnapshot['patientId'];
+
+      DocumentSnapshot patientSnapshot = await FirebaseFirestore.instance
           .collection('patients')
-          .where('aadhaarNumber', isEqualTo: patientId)
+          .doc(patientId)
           .get();
 
-      if (optometrySnapshot.docs.isNotEmpty && patientSnapshot.docs.isNotEmpty) {
-        DocumentSnapshot optometryDoc = optometrySnapshot.docs.first;
-        DocumentSnapshot patientDoc = patientSnapshot.docs.first;
-
+      if (optometrySnapshot.exists && patientSnapshot.exists) {
         // Combine data from both collections
         Map<String, dynamic> combinedData = {
-          ...optometryDoc.data() as Map<String, dynamic>,
-          ...patientDoc.data() as Map<String, dynamic>,
+          ...optometrySnapshot.data() as Map<String, dynamic>,
+          ...patientSnapshot.data() as Map<String, dynamic>,
         };
 
         return combinedData;
@@ -83,7 +87,7 @@ class Viewrecords extends StatelessWidget {
                         children: [
                           Text(data['name']??'John Doe', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
                           Text('Age : ${data['age'] ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                          Text('ID: $patientId', style: TextStyle( fontSize: 18)),
+                          Text('ID: ${data['patientId']}', style: TextStyle( fontSize: 18)),
                         ],
                       )
                     ],

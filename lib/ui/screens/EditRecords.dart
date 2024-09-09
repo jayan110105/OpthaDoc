@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class EditRecords extends StatefulWidget {
-  final String patientId;
+  final String docID;
 
-  const EditRecords({required this.patientId, super.key});
+  const EditRecords({required this.docID, super.key});
 
   @override
   _EditRecordsState createState() => _EditRecordsState();
@@ -67,6 +67,8 @@ class _EditRecordsState extends State<EditRecords> {
   String? CorrectedNVR;
   String? CorrectedNVL;
 
+  String? patientID;
+
   final TextEditingController _BriefComplaintController = TextEditingController();
 
   @override
@@ -77,14 +79,13 @@ class _EditRecordsState extends State<EditRecords> {
 
   Future<void> fetchEyeCheckupDetails() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
           .collection('optometryDetails')
-          .where('patientId', isEqualTo: widget.patientId)
+          .doc(widget.docID)
           .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot doc = querySnapshot.docs.first;
-        final data = doc.data() as Map<String, dynamic>;
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data() as Map<String, dynamic>;
 
         setState(() {
           _axisRController.text = data['AxisR'] ?? '';
@@ -162,15 +163,12 @@ class _EditRecordsState extends State<EditRecords> {
         _isLoading = true;
       });
       try {
-        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        DocumentReference docRef = FirebaseFirestore.instance
             .collection('optometryDetails')
-            .where('patientId', isEqualTo: widget.patientId)
-            .get();
+            .doc(widget.docID);
 
-        if (querySnapshot.docs.isNotEmpty) {
-          DocumentReference docRef = querySnapshot.docs.first.reference;
-          await docRef.update({
-            'patientId': widget.patientId,
+        await docRef.update({
+            'patientId': patientID,
             'Bifocal': selectedBifocal,
             'Color': selectedColor,
             'Remarks': selectedRemarks,
@@ -210,8 +208,7 @@ class _EditRecordsState extends State<EditRecords> {
           );
           Navigator.pop(context);
           Navigator.pop(context);
-        }
-      }catch (e) {
+        } catch (e) {
         print('Error updating records: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error updating records')),

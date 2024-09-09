@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
-import 'package:optha_doc/ui/screens/EditRecords.dart';
+import 'package:optha_doc/ui/screens/Records.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
-import 'package:optha_doc/ui/screens/ViewRecords.dart';
+
 import 'package:optha_doc/ui/screens/appointment.dart';
 
 class Dashboard extends StatefulWidget {
@@ -290,14 +290,14 @@ class _DashboardState extends State<Dashboard> {
             // Navigator.pushNamed(context, '/viewrecords');
             Navigator.push(
               context,
-                MaterialPageRoute(builder: (context) => Viewrecords(patientId: patientId))
+                MaterialPageRoute(builder: (context) => Records(routeName: 'ViewRecords', patientId: patientId))
             );
           }),
         if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
           _buildDashboardButton(Icons.edit, 'Edit Records', () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => EditRecords(patientId: patientId))
+                MaterialPageRoute(builder: (context) => Records(routeName: 'EditRecords', patientId: patientId))
             );
           }),
         if (role == 'Senior Doctor/ Consultant')

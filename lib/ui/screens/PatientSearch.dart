@@ -42,13 +42,13 @@ class _SearchPatientState extends State<SearchPatient> {
         } else if(widget.routeName == 'viewrecords'){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Viewrecords(patientId: querySnapshot.docs.first.id)),
+            MaterialPageRoute(builder: (context) => Viewrecords(docID: querySnapshot.docs.first.id)),
           );
         }else if(widget.routeName == 'editrecords') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>
-                EditRecords(patientId: querySnapshot.docs.first.id)),
+                EditRecords(docID: querySnapshot.docs.first.id)),
           );
         }else if(widget.routeName == 'appointment') {
           Navigator.push(
