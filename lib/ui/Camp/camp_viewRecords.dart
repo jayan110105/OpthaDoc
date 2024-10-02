@@ -3,10 +3,10 @@ import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/services/Hive/patients.dart';
 
-class Viewrecords extends StatelessWidget {
-  final String docID;
+class campViewRecords extends StatelessWidget {
+  final int docID;
 
-  const Viewrecords({required this.docID, super.key});
+  const campViewRecords({required this.docID, super.key});
 
   Future<Map<String, dynamic>?> fetchEyeCheckupDetails() async {
     try {

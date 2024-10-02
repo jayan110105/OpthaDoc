@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:optha_doc/ui/screens/Records.dart';
-import 'package:optha_doc/ui/screens/User2.dart';
+import 'package:optha_doc/ui/Camp/camp_eyecheckup.dart';
+import 'package:optha_doc/ui/Camp/camp_records.dart';
 import 'package:optha_doc/ui/screens/appointment.dart';
 import 'package:hive/hive.dart';
 
@@ -198,14 +199,14 @@ class _campDashboardState extends State<campDashboard> {
             // Navigator.pushNamed(context, '/eyecheckup');
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => User2(patientId: patientId))
+                MaterialPageRoute(builder: (context) => CampEyeCheckUP(patientId: patientId))
             );
           }),
           _buildDashboardButton(Icons.assignment, 'View Records', () {
             // Navigator.pushNamed(context, '/viewrecords');
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Records(routeName: 'ViewRecords', patientId: patientId))
+                MaterialPageRoute(builder: (context) => CampRecords(routeName: 'ViewRecords', patientId: patientId))
             );
           }),
           _buildDashboardButton(Icons.edit, 'Edit Records', () {

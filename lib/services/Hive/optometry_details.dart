@@ -178,7 +178,7 @@ class OptometryDetails extends HiveObject {
       'correctedAxisR': correctedAxisR,
       'correctedAxisL': correctedAxisL,
       'correctedIPD': correctedIPD,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt,
     };
   }
 }

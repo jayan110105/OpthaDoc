@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 
-class User2 extends StatefulWidget {
+class CampEyeCheckUP extends StatefulWidget {
   final String patientId;
 
-  const User2({required this.patientId, super.key});
+  const CampEyeCheckUP({required this.patientId, super.key});
 
   @override
-  State<User2> createState() => _User2State();
+  State<CampEyeCheckUP> createState() => _CampEyeCheckUPState();
 }
 
-class _User2State extends State<User2> {
+class _CampEyeCheckUPState extends State<CampEyeCheckUP> {
 
   String? selectedBifocal;
   String? selectedColor;
