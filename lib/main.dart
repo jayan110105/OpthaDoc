@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:optha_doc/firebase_options.dart';
 import 'package:optha_doc/services/Hive/patients.dart';
+import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/ui/Camp/camp_dashboard.dart';
 import 'package:optha_doc/ui/Camp/camp_registration.dart';
 import 'package:optha_doc/ui/Unused/PatientSearch.dart';
@@ -18,7 +19,9 @@ void main() async {
   await Hive.initFlutter();
   await Hive.initFlutter();
   Hive.registerAdapter(PatientsAdapter());
+  Hive.registerAdapter(OptometryDetailsAdapter());
   await Hive.openBox<Patients>('patients');
+  await Hive.openBox<OptometryDetails>('optometryDetails');
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
