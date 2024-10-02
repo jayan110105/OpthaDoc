@@ -42,4 +42,18 @@ class Patients extends HiveObject {
     required this.createdAt,
     this.imagePath,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'age': age,
+      'aadhaarNumber': aadhaarNumber,
+      'phoneNumber': phoneNumber,
+      'parentSpouseName': parentSpouseName,
+      'address': address,
+      'gender': gender,
+      'createdAt': createdAt,
+      'imagePath': imagePath,
+    };
+  }
 }

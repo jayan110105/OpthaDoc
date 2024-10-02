@@ -142,4 +142,43 @@ class OptometryDetails extends HiveObject {
     this.correctedIPD,
     required this.createdAt,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'patientId': patientId,
+      'bifocal': bifocal,
+      'color': color,
+      'remarks': remarks,
+      'dvSpR': dvSpR,
+      'dvSpL': dvSpL,
+      'nvSpR': nvSpR,
+      'nvSpL': nvSpL,
+      'cylR': cylR,
+      'cylL': cylL,
+      'dvr': dvr,
+      'dvl': dvl,
+      'aidedDVR': aidedDVR,
+      'aidedDVL': aidedDVL,
+      'nvr': nvr,
+      'nvl': nvl,
+      'axisR': axisR,
+      'axisL': axisL,
+      'ipd': ipd,
+      'briefComplaint': briefComplaint,
+      'correctedDVSpR': correctedDVSpR,
+      'correctedDVSpL': correctedDVSpL,
+      'correctedNVSpR': correctedNVSpR,
+      'correctedNVSpL': correctedNVSpL,
+      'correctedCylR': correctedCylR,
+      'correctedCylL': correctedCylL,
+      'correctedDVR': correctedDVR,
+      'correctedDVL': correctedDVL,
+      'correctedNVR': correctedNVR,
+      'correctedNVL': correctedNVL,
+      'correctedAxisR': correctedAxisR,
+      'correctedAxisL': correctedAxisL,
+      'correctedIPD': correctedIPD,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
 }
