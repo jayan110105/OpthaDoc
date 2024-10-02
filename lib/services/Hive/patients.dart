@@ -52,7 +52,7 @@ class Patients extends HiveObject {
       'parentSpouseName': parentSpouseName,
       'address': address,
       'gender': gender,
-      'imagePath': imagePath,
+      'imageUrl': imagePath,
     };
   }
 }

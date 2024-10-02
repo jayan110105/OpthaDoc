@@ -21,7 +21,10 @@ class campViewRecords extends StatelessWidget {
       String patientId = optometryDetails.patientId;
 
       var patientBox = Hive.box<Patients>('patients');
-      Patients? patientDetails = patientBox.get(optometryDetails.patientId);
+      Patients? patientDetails = patientBox.values.firstWhere(
+            (patient) => patient.aadhaarNumber == patientId,
+        orElse: () => null as Patients,
+      );
 
 
       if (patientDetails == null) {
@@ -179,9 +182,9 @@ class campViewRecords extends StatelessWidget {
                         Text('Axis', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Left', data['AxisL']+"°" ?? 'N/A')),
+                            Expanded(child: _buildCard('Left', data['AxisL']!=null?data['AxisL']+"°" : 'N/A')),
                             SizedBox(width: 16),
-                            Expanded(child: _buildCard('Right', data['AxisR']+"°" ?? 'N/A')),
+                            Expanded(child: _buildCard('Right', data['AxisR']!=null?data['AxisL']+"°" : 'N/A')),
                           ],
                         ),
                         SizedBox(height: 16),
@@ -250,9 +253,9 @@ class campViewRecords extends StatelessWidget {
                         Text('Axis', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
                         Row(
                           children: [
-                            Expanded(child: _buildCard('Left', data['CorrectedAxisL']+"°" ?? 'N/A')),
+                            Expanded(child: _buildCard('Left', data['CorrectedAxisL'] == null ? 'N/A' : data['CorrectedAxisL']+"°")),
                             SizedBox(width: 16),
-                            Expanded(child: _buildCard('Right', data['CorrectedAxisR']+"°" ?? 'N/A')),
+                            Expanded(child: _buildCard('Right', data['CorrectedAxisR'] == null ? 'N/A' : data['CorrectedAxisR']+"°")),
                           ],
                         ),
                         SizedBox(height: 16),
