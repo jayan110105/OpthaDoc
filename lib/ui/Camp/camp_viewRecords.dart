@@ -18,7 +18,7 @@ class campViewRecords extends StatelessWidget {
       }
 
       // Extract patientId from optometry details
-      String patientId = optometryDetails.patientId;
+      String? patientId = optometryDetails.patientId;
 
       var patientBox = Hive.box<Patients>('patients');
       Patients? patientDetails = patientBox.values.firstWhere(
@@ -37,7 +37,8 @@ class campViewRecords extends StatelessWidget {
         ...patientDetails.toMap(),
       };
 
-        return combinedData;
+
+      return combinedData;
     } catch (e) {
       print('Error fetching eye checkup details: $e');
       return null;

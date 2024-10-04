@@ -5,7 +5,7 @@ part 'optometry_details.g.dart';
 @HiveType(typeId: 1)
 class OptometryDetails extends HiveObject {
   @HiveField(0)
-  String patientId;
+  String? patientId;
 
   @HiveField(1)
   String? bifocal;

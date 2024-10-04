@@ -212,7 +212,7 @@ class _campDashboardState extends State<campDashboard> {
           _buildDashboardButton(Icons.edit, 'Edit Records', () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Records(routeName: 'EditRecords', patientId: patientId))
+                MaterialPageRoute(builder: (context) => CampRecords(routeName: 'EditRecords', patientId: patientId))
             );
           }),
           _buildDashboardButton(Icons.event, 'Appointment', () {

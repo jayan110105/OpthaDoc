@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:optha_doc/ui/screens/ViewRecords.dart';
-import 'package:optha_doc/ui/screens/EditRecords.dart';
+import 'package:optha_doc/ui/Camp/camp_editRecords.dart';
 import 'package:optha_doc/ui/Camp/camp_viewRecords.dart';
 import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
@@ -64,7 +63,7 @@ class CampRecords extends StatelessWidget {
     } else if (routeName == 'EditRecords') {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditRecords(docID: docID)),
+        MaterialPageRoute(builder: (context) => CampEditRecords(docID: docID)),
       );
     }
   }

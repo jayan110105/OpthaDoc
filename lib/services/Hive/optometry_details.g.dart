@@ -17,7 +17,7 @@ class OptometryDetailsAdapter extends TypeAdapter<OptometryDetails> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return OptometryDetails(
-      patientId: fields[0] as String,
+      patientId: fields[0] as String?,
       bifocal: fields[1] as String?,
       color: fields[2] as String?,
       remarks: fields[3] as String?,
