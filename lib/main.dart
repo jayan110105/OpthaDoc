@@ -13,6 +13,7 @@ import 'package:optha_doc/ui/screens/User1.dart';
 import 'package:optha_doc/ui/screens/dashboard.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() async {
 
@@ -64,6 +65,17 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatelessWidget {
   const Home({super.key});
+
+  Future<bool> isConnectedToInternet() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    print(connectivityResult);
+    if (connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi)) {
+      return true; // Connected to mobile or wifi
+    } else {
+      return false; // Not connected to the internet
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,8 +131,17 @@ class Home extends StatelessWidget {
                   const SizedBox(width: 40),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                      onPressed: () async {
+                        if (await isConnectedToInternet()) {
+                          Navigator.pushNamed(context, '/login');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text('No internet connection'),
+                                backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                       child: const Text('Hospital'),
                       style: ElevatedButton.styleFrom(

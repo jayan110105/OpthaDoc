@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:optha_doc/ui/screens/Records.dart';
 import 'package:optha_doc/ui/Camp/camp_eyecheckup.dart';
 import 'package:optha_doc/ui/Camp/camp_records.dart';
-import 'package:optha_doc/ui/screens/appointment.dart';
 import 'package:hive/hive.dart';
 
 import '../../services/Hive/patients.dart';
@@ -213,12 +211,6 @@ class _campDashboardState extends State<campDashboard> {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => CampRecords(routeName: 'EditRecords', patientId: patientId))
-            );
-          }),
-          _buildDashboardButton(Icons.event, 'Appointment', () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Appointment(patientId: patientId))
             );
           }),
       ],

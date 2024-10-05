@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:optha_doc/ui/screens/Records.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
-
+import 'package:hive/hive.dart';
+import 'package:optha_doc/services/Hive/optometry_details.dart';
+import 'package:optha_doc/services/Hive/patients.dart';
 import 'package:optha_doc/ui/screens/appointment.dart';
 
 class Dashboard extends StatefulWidget {
@@ -79,6 +81,71 @@ class _DashboardState extends State<Dashboard> {
         SnackBar(content: Text('Error checking patient ID: $e'), backgroundColor: Colors.red),
       );
     }
+  }
+
+  Future<void> _uploadDataToFirebase() async {
+    try {
+      Box<OptometryDetails> optometryBox = Hive.box('optometryDetails');
+      List<OptometryDetails> optometryDetailsList = optometryBox.values.toList();
+
+      for (var details in optometryDetailsList) {
+        await FirebaseFirestore.instance.collection('optometryDetails').add(details.toMap());
+      }
+
+      Box<Patients> patientBox = Hive.box('patients');
+      List<Patients>  patientList = patientBox.values.toList();
+
+      for (var patient in patientList) {
+        // await FirebaseFirestore.instance.collection('patients').add(patient.toMap());
+        if(patient.aadhaarNumber != null && patient.aadhaarNumber != '') {
+          await FirebaseFirestore.instance.collection('patients').doc(
+              patient.aadhaarNumber).set(patient.toMap());
+        }
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Data uploaded successfully'), backgroundColor: Colors.green),
+      );
+    } catch (e) {
+      Logger().e('Error uploading data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading data: $e'), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+  Future<void> _showUploadConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Upload Data'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Do you want to upload the data to Firebase?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Upload'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _uploadDataToFirebase();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -306,6 +373,10 @@ class _DashboardState extends State<Dashboard> {
                 context,
                 MaterialPageRoute(builder: (context) => Appointment(patientId: patientId))
             );
+          }),
+        if (role == 'Senior Doctor/ Consultant')
+          _buildDashboardButton(Icons.cloud_upload, 'Upload Data', () {
+            _showUploadConfirmationDialog();
           }),
       ],
     );
