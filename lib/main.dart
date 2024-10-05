@@ -42,7 +42,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         textSelectionTheme: const TextSelectionThemeData(
-          selectionHandleColor: Colors.black, // Change the selection handle (cursor dropper) color to black
+          selectionHandleColor: Color(0xFF163352), // Change the selection handle (cursor dropper) color to black
+        ),
+        fontFamily: 'Poppins',
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF163352),), // Default text color
+          bodyMedium: TextStyle(color: Color(0xFF163352),), // Default text color
         ),
       ),
       initialRoute: initialRoute,

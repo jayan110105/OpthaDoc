@@ -196,7 +196,7 @@ class _DashboardState extends State<Dashboard> {
                     '$greeting, $username',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
