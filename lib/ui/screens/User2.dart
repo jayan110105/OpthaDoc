@@ -156,7 +156,7 @@ class _User2State extends State<User2> {
             padding: const EdgeInsets.only(left: 16.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xFF4E636E),
+                color: Color(0xFF163352),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
@@ -773,7 +773,7 @@ class _User2State extends State<User2> {
                 children: [
                   TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: Color(0xFFACB5B4),
+                        backgroundColor: Color(0xFFBBC2B4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                           // side: BorderSide(color: Color(0xFF163352), width: 0.5),
@@ -796,7 +796,7 @@ class _User2State extends State<User2> {
                       )
                       : TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Color(0xFF4E636E),
+                      backgroundColor: Color(0xFF163352),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
