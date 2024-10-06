@@ -580,7 +580,8 @@ class _User2State extends State<User2> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    _buildTextLabel('Axis'),                    _buildAxisWheel("Axis R", _CorrectedaxisLValue, (newValue) {
+                    _buildTextLabel('Axis'),
+                    _buildAxisWheel("Axis R", _CorrectedaxisLValue, (newValue) {
                       setState(() {
                         _CorrectedaxisLValue = newValue;
                         _CorrectedAxisRController.text = newValue.toString();
@@ -775,7 +776,7 @@ class _User2State extends State<User2> {
                       style: TextButton.styleFrom(
                         backgroundColor: Color(0xFFBBC2B4),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                           // side: BorderSide(color: Color(0xFF163352), width: 0.5),
                         ),
                         padding: const EdgeInsets.all(10),
@@ -798,7 +799,7 @@ class _User2State extends State<User2> {
                     style: TextButton.styleFrom(
                       backgroundColor: Color(0xFF163352),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       padding: const EdgeInsets.all(10),
                     ),
