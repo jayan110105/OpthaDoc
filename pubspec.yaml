@@ -50,6 +50,8 @@ dependencies:
   build_runner: ^2.4.11
   path_provider: ^2.1.4
   connectivity_plus: ^6.0.5
+  pdf: ^3.11.1
+  printing: ^5.13.3
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,7 @@ flutter:
      - assets/images/homepage.jpg
      - assets/images/eyeL.png
      - assets/images/eyeR.png
+     - assets/images/KMClogo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

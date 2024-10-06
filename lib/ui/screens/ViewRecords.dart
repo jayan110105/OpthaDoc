@@ -1,10 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 class Viewrecords extends StatelessWidget {
   final String docID;
 
   const Viewrecords({required this.docID, super.key});
+
+  String formatDate(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('d MMMM, yyyy').format(dateTime);
+  }
+
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('hh:mm a').format(dateTime);
+  }
 
   Future<Map<String, dynamic>?> fetchEyeCheckupDetails() async {
     try {
@@ -41,6 +55,264 @@ class Viewrecords extends StatelessWidget {
       print('Error fetching eye checkup details: $e');
       return null;
     }
+  }
+
+  Future<void> _generatePDF(Map<String, dynamic> patientData) async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.SizedBox(height: 10),
+              pw.Text(
+                "KASTURBA HOSPITAL",
+                style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                "MANIPAL",
+                style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Center(
+                child: pw.Text(
+                  "DEPARTMENT OF OPHTHALMOLOGY",
+                  style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
+                ),
+              ),
+              pw.Center(
+                child: pw.Text(
+                  "PRESCRIPTION FOR GLASSES",
+                  style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold),
+                ),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.SizedBox(),
+                  pw.Text("Date: ${formatDate(patientData['createdAt'])}"),
+                ],
+              ),
+              pw.SizedBox(height: 10),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.SizedBox(),
+                  pw.Text("Hospital No.: ${patientData['patientId']}"),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text("Name: ${patientData['name'] ?? 'John Doe'}"),
+              pw.SizedBox(height: 10),
+              // Table for Eye Prescription
+              pw.Table(
+                border: pw.TableBorder.all(),
+                columnWidths: {
+                  0: pw.FlexColumnWidth(1.5),
+                  1: pw.FlexColumnWidth(1),
+                  2: pw.FlexColumnWidth(1),
+                  3: pw.FlexColumnWidth(1),
+                  4: pw.FlexColumnWidth(1.5),
+                  5: pw.FlexColumnWidth(1),
+                  6: pw.FlexColumnWidth(1),
+                  7: pw.FlexColumnWidth(1),
+                },
+                children: [
+                  pw.TableRow(
+                    decoration: pw.BoxDecoration(color: PdfColors.grey300),
+                    children: [
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('RIGHT Eye')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Sphere')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Cyl')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Axis')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('LEFT Eye')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Sphere')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Cyl')),
+                      ),
+                      pw.Container(
+                        height: 50,
+                        child: pw.Center(child: pw.Text('Axis')),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('D.V.')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedDVSpL'] ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedCylL'] ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedAxisL']+"°" ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('D.V.')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedDVSpR'] ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedCylR'] ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedAxisR']+"°" ?? ''}')),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('N.V.')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedNVSpL']=="nullnull" ? '' : patientData['CorrectedNVSpL']}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('N.V.')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['CorrectedNVSpR']=="nullnull" ? '': patientData['CorrectedNVSpR']}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                    ],
+                  ),
+                  pw.TableRow(
+                    children: [
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('I.P.D.')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('${patientData['IPD']+" mm" ?? ''}')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                      pw.Container(
+                        height: 40,
+                        child: pw.Center(child: pw.Text('')),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 15),
+              // Bifocal, Color, and Remarks sections
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("Bifocal: "),
+                  pw.Text("${patientData['Bifocal']}", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 5),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("Colour: "),
+                  pw.Text("${patientData['Color']}",
+                      style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 5),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                children: [
+                  pw.Text("Remarks: "),
+                  pw.Text("${patientData['Remarks']}", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                ],
+              ),
+              pw.SizedBox(height: 20),
+              // Signature line
+              // pw.Row(
+              //   mainAxisAlignment: pw.MainAxisAlignment.end,
+              //   children: [
+              //     pw.Text("Signature: ________________"),
+              //   ],
+              // ),
+            ],
+          );
+        },
+      ),
+    );
+
+    // Preview the PDF using the Printing package
+    await Printing.layoutPdf(
+      onLayout: (PdfPageFormat format) async => pdf.save(),
+    );
   }
 
   @override
@@ -408,7 +680,7 @@ class Viewrecords extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           minimumSize: Size(88, 60),
                         ),
-                        onPressed: (){},
+                        onPressed: () => _generatePDF(data),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           child: Row(
