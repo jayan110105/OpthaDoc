@@ -33,6 +33,27 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFE9E6DB),
+      appBar: AppBar(
+          backgroundColor: Color(0xFFE9E6DB),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF163352),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          )
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -65,7 +86,7 @@ class _RegisterState extends State<Register> {
                               size: 30,
                           ),
                           SizedBox(width: 10,),
-                          Expanded(child: _buildTextField("Username", _usernameController, false)),
+                          Expanded(child: _buildTextField("Name", _usernameController, false)),
                         ],
                       ),
                       const SizedBox(height: 20),

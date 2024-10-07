@@ -14,7 +14,6 @@ import 'package:optha_doc/ui/screens/dashboard.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:optha_doc/ui/screens/ChangePassword.dart';
 
 void main() async {
 

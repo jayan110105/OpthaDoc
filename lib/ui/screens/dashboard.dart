@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/services/Hive/patients.dart';
 import 'package:optha_doc/ui/screens/appointment.dart';
+import 'package:optha_doc/ui/screens/DoctorDetails.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -449,6 +450,13 @@ class _DashboardState extends State<Dashboard> {
         if (role == 'Admin')
           _buildDashboardButton(Icons.admin_panel_settings, 'Register User', () {
             Navigator.pushNamed(context, '/register');
+          }),
+        if (role == 'Admin')
+          _buildDashboardButton(Icons.medical_services, 'Details', () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DoctorDetailsForm())
+            );
           }),
       ],
     );

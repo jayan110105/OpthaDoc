@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:optha_doc/ui/screens/DoctorDetails.dart';
 
 class ChangePassword extends StatefulWidget {
   final String email;
@@ -41,6 +42,9 @@ class _ChangePasswordState extends State<ChangePassword> {
 
         _logger.i("Password changed successfully for user: ${widget.email}");
 
+        DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+        String role = userDoc['role'];
+
         // Show a success message or navigate to another screen
         showDialog(
           context: context,
@@ -55,7 +59,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/dashboard');
+                  if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DoctorDetailsForm()),
+                    );
+                  } else {
+                    Navigator.pushNamed(context, '/dashboard');
+                  }
                 },
                 child: const Text('OK', style: TextStyle(color: Colors.white),),
               ),
