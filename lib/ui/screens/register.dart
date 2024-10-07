@@ -80,8 +80,18 @@ class _RegisterState extends State<Register> {
                           Expanded(child: _buildTextField("Email", _emailController, false),),
                         ],
                       ),
-                      // const SizedBox(height: 20),
-                      // _buildTextField("Password", _passwordController, true),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.lock,
+                            color: Color(0xFF163352),
+                            size: 30,
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(child: _buildTextField("Password", _passwordController, true),),
+                        ],
+                      ),
                       const SizedBox(height: 20),
                       Row(
                         children: [
@@ -207,6 +217,7 @@ class _RegisterState extends State<Register> {
         'username': _usernameController.text.trim(),
         'email': _emailController.text.trim(),
         'role': _selectedRole,
+        'firstTimeLogin': true,
         'createdAt': Timestamp.now(),
       });
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:optha_doc/ui/screens/ChangePassword.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,12 +23,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE9E6DB),
       resizeToAvoidBottomInset: true,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Card(
-            elevation: 5,
+            color:  Color(0xFFE9E6DB),
+            elevation: 10,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Form(
@@ -45,22 +48,42 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _buildTextField("Username", _usernameController, false),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          color: Color(0xFF163352),
+                          size: 30,
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(child: _buildTextField("Username", _usernameController, false)),
+                      ],
+                    ),
                     const SizedBox(height: 20),
-                    _buildTextField("Password", _passwordController, true),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.lock,
+                          color: Color(0xFF163352),
+                          size: 30,
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(child: _buildTextField("Password", _passwordController, true),),
+                      ],
+                    ),
                     const SizedBox(height: 20),
                     _isLoading
                         ? const Center(
                       child: CircularProgressIndicator(
-                        color: Colors.black,
+                        color: Color(0xFF163352),
                       ),
                     )
                         : ElevatedButton(
                       onPressed: _login,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
+                        backgroundColor: Color(0xFF163352),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         padding: const EdgeInsets.all(10),
                       ),
@@ -70,17 +93,6 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
-                      child: const Text(
-                        'Register',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -94,15 +106,16 @@ class _LoginState extends State<Login> {
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelStyle: const TextStyle(
-        color: Colors.black,
+        color: Color(0xFF163352),
       ),
       labelText: label,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(30),
       ),
-      focusedBorder: const OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide(
-          color: Colors.black,
+          color: Color(0xFF163352),
         ),
       ),
     );
@@ -110,7 +123,7 @@ class _LoginState extends State<Login> {
 
   Widget _buildTextField(String label, TextEditingController controller, bool isPassword) {
     return TextFormField(
-      cursorColor: Colors.black,
+      cursorColor: Color(0xFF163352),
       controller: controller,
       obscureText: isPassword,
       decoration: _inputDecoration(label),
@@ -149,7 +162,9 @@ class _LoginState extends State<Login> {
         );
       }
 
-      String email = querySnapshot.docs.first['email'];
+      var userDoc = querySnapshot.docs.first;
+      String email = userDoc['email'];
+      bool firstTimeLogin = userDoc['firstTimeLogin'];
 
       // Sign in with email and password
       await _auth.signInWithEmailAndPassword(
@@ -158,7 +173,16 @@ class _LoginState extends State<Login> {
       );
 
       // Navigate to another screen or show success message
-      Navigator.pushNamed(context, '/dashboard');
+
+      if (firstTimeLogin) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChangePassword(email: email)),
+        );
+      } else {
+        // Navigate to another screen or show success message
+        Navigator.pushNamed(context, '/dashboard');
+      }
     } on FirebaseAuthException catch (e) {
       // Handle different errors from FirebaseAuthException
       String message;
