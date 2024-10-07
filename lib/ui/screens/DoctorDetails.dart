@@ -17,6 +17,8 @@ class _DoctorDetailsFormState extends State<DoctorDetailsForm> {
   Map<String, TimeOfDay> workingHoursStart = {};
   Map<String, TimeOfDay> workingHoursEnd = {};
 
+  List<Map<String, TimeOfDay>> breakTimes = [];
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +64,44 @@ class _DoctorDetailsFormState extends State<DoctorDetailsForm> {
     }
   }
 
+  void _addBreakTime() {
+    setState(() {
+      breakTimes.add({"start": TimeOfDay(hour: 12, minute: 0), "end": TimeOfDay(hour: 13, minute: 0)});
+    });
+  }
+
+  Future<void> _selectBreakTime(BuildContext context, int index, bool isStart) async {
+    TimeOfDay initialTime = isStart ? breakTimes[index]['start']! : breakTimes[index]['end']!;
+    TimeOfDay? picked = await showTimePicker(
+        context: context,
+        initialTime: initialTime,
+        builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFF163352), // Accent color
+              onPrimary: Color(0xFFE9E6DB), // Text color on accent color
+              onSurface: Color(0xFF163352), // Text color on surface
+              secondary: Color(0xFF163352),
+              onSecondary: Color(0xFFE9E6DB),// Background color
+            ),
+            dialogBackgroundColor: Color(0xFFE9E6DB),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != initialTime) {
+      setState(() {
+        if (isStart) {
+          breakTimes[index]['start'] = picked;
+        } else {
+          breakTimes[index]['end'] = picked;
+        }
+      });
+    }
+  }
+
   // Function to validate and save form data
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -76,6 +116,10 @@ class _DoctorDetailsFormState extends State<DoctorDetailsForm> {
               "end": workingHoursEnd[day]!.format(context),
             }
         },
+        "breakTimes": breakTimes.map((bt) => {
+          "start": bt['start']!.format(context),
+          "end": bt['end']!.format(context),
+        }).toList(),
       };
 
       try {
@@ -225,15 +269,53 @@ class _DoctorDetailsFormState extends State<DoctorDetailsForm> {
                         );
                       }).toList(),
                       SizedBox(height: 20),
+                      Text('Break Times:', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ...breakTimes.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        return Row(
+                          children: [
+                            TextButton(
+                              onPressed: () => _selectBreakTime(context, index, true),
+                              child: Text(
+                                  'Start: ${breakTimes[index]['start']!.format(context)}',
+                                  style: TextStyle(color: Color(0xFF163352)),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => _selectBreakTime(context, index, false),
+                              child: Text(
+                                  'End: ${breakTimes[index]['end']!.format(context)}',
+                                  style: TextStyle(color: Color(0xFF163352)),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  breakTimes.removeAt(index);
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                      SizedBox(height: 20),
                       Row(
                         children: [
+                          ElevatedButton(
+                            onPressed: _addBreakTime,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFF163352), // Set the background color
+                            ),
+                            child: Text('Add Break', style: TextStyle(color: Colors.white),),
+                          ),
                           Spacer(),
                           ElevatedButton(
                             onPressed: _submitForm,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF163352), // Set the background color
                             ),
-                            child: Text('Save Doctor Details', style: TextStyle(color: Colors.white),),
+                            child: Text('Save Details', style: TextStyle(color: Colors.white),),
                           ),
                         ],
                       ),
