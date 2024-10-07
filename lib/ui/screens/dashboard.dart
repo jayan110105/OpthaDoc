@@ -20,6 +20,14 @@ class _DashboardState extends State<Dashboard> {
 
   String patientId = '';
 
+  String imageUrl = '';
+
+  String gender = '';
+
+  String name = '';
+
+  String age = '';
+
   TextEditingController _patientIdController = TextEditingController();
 
   final FocusNode _focusNode = FocusNode();
@@ -31,23 +39,14 @@ class _DashboardState extends State<Dashboard> {
       return {
         'role': userDoc['role'],
         'username': userDoc['username'],
+        'email': userDoc['email'],
       };
     }
     return {
       'role': 'Guest',
       'username': 'Guest',
+      'email': 'guest@opthadoc.com',
     };
-  }
-
-  String _getGreeting() {
-    int hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 17) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
   }
 
   Future<void> _logout(BuildContext context) async {
@@ -66,8 +65,13 @@ class _DashboardState extends State<Dashboard> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Patient ID $id found!'), backgroundColor: Colors.green),
         );
+        var patientDoc = querySnapshot.docs.first;
         setState(() {
           patientId = id;
+          imageUrl = patientDoc['imageUrl'] ?? '';
+          gender = patientDoc['gender'] ?? '';
+          name = patientDoc['name'] ?? '';
+          age = patientDoc['age'] ?? '';
         });
         _focusNode.unfocus();
       } else {
@@ -151,23 +155,25 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFE9E6DB),
       appBar: _buildAppBar(),
-      body: FutureBuilder<Map<String, String>>(
-        future: _getUserDetails(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Colors.black));
-          }
-          if (snapshot.hasError) {
-            Logger().e('Error fetching user details: ${snapshot.error}');
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          String role = snapshot.data?['role'] ?? 'Guest';
-          String username = snapshot.data?['username'] ?? 'Guest';
-          String greeting = _getGreeting();
-          return _buildDashboardContent(context, role, username, greeting);
-        },
+      body: Container(
+        child: FutureBuilder<Map<String, String>>(
+          future: _getUserDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator(color: Colors.black));
+            }
+            if (snapshot.hasError) {
+              Logger().e('Error fetching user details: ${snapshot.error}');
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            String role = snapshot.data?['role'] ?? 'Guest';
+            String username = snapshot.data?['username'] ?? 'Guest';
+            String email = snapshot.data?['email'] ?? 'guest@opthadoc.now';
+            return _buildDashboardContent(context, role, username, email);
+          },
+        ),
       ),
     );
   }
@@ -180,52 +186,158 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _buildDashboardContent(BuildContext context, String role, String username, String greeting) {
+  Widget _buildDashboardContent(BuildContext context, String role, String username, String email) {
     return SingleChildScrollView(
       child: Container(
-        color: Colors.white,
+        color: Color(0xFFE9E6DB),
         child: Column(
           children: [
             Container(
-              color: Colors.black,
               padding: EdgeInsets.all(16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '$greeting, $username',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  CircleAvatar(
+                    backgroundColor: Color(0xFFBBC2B4),
+                    radius: 30.0,
                   ),
-                  _buildMenuAnchor(context),
+                  SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$username',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '$email',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        _logout(context);
+                      },
+                      icon: Icon(
+                        Icons.logout,
+                        color: Color(0xFF163352),
+                        size: 30.0,
+                      )
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            Divider(),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  imageUrl != null && imageUrl != '' ? CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(imageUrl),
+                    backgroundColor: Colors.transparent,
+                  )
+                      : CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Color(0xFFBBC2B4),
+                    child: Icon(
+                      gender =="Female" ? Icons.face_3: Icons.face,
+                      color: Color(0xFF163352),
+                      size: 80,
+                    ),
+                  ),
+                  SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name == "" ? 'Name' : '$name',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(
+                            gender == "" ? Icons.transgender : gender == "Male" ? Icons.male : Icons.female,
+                            color: Color(0xFF163352),
+                            size: 20.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            gender == "" ? "Gender" : '$gender',
+                            style: TextStyle(
+                              color: Color(0xFF163352),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5,),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.cake,
+                            color: Color(0xFF163352),
+                            size: 20.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            age == "" ? 'Age' : '$age',
+                            style: TextStyle(
+                              color: Color(0xFF163352),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            // SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Color(0xFFBBC2B4),
+                  border: Border.all(color: Color(0xFF163352)),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _patientIdController,
-                        focusNode: _focusNode,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          hintText: 'Enter Patient ID',  // Placeholder text
-                          hintStyle: TextStyle(
-                            color: Colors.grey[700],
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16),
+                        child: TextField(
+                          controller: _patientIdController,
+                          focusNode: _focusNode,
+                          cursorColor: Color(0xFF163352),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            hintText: 'Enter Patient ID',  // Placeholder text
+                            hintStyle: TextStyle(
+                              color: Color(0xFF163352),
+                            ),
                           ),
                         ),
                       ),
@@ -234,32 +346,35 @@ class _DashboardState extends State<Dashboard> {
                     // Status Button
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_focusNode.hasFocus) {
-                            _checkPatientId(context);
-                          } else {
-                            _focusNode.requestFocus();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.grey[700],
-                          backgroundColor: Colors.grey[200], // Button text color
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              patientId == '' ? 'Confirm':'Change',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_focusNode.hasFocus) {
+                              _checkPatientId(context);
+                            } else {
+                              _focusNode.requestFocus();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color(0xFF163352), // Button text color
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
                             ),
-                          ],
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                patientId == '' ? 'Confirm':'Change',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -273,8 +388,8 @@ class _DashboardState extends State<Dashboard> {
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200], // Background color
-                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                   color: Color(0xFFBBC2B4), // Background color
+                  borderRadius: BorderRadius.circular(30.0), // Rounded corners
                 ),
                 child: Center(
                   child: _buildDashboardGrid(context, role),
@@ -284,53 +399,6 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildMenuAnchor(BuildContext context) {
-    return MenuAnchor(
-      style: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
-        elevation: WidgetStateProperty.all(10),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        shadowColor: WidgetStateProperty.all(Colors.black),
-      ),
-      builder: (BuildContext context, MenuController controller, Widget? child) {
-        return GestureDetector(
-          onTap: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
-          },
-          child: CircleAvatar(
-            backgroundColor: Colors.white,
-            radius: 30.0,
-          ),
-        );
-      },
-      menuChildren: [
-        Container(
-          margin: EdgeInsets.only(top: 5),
-          padding: EdgeInsets.all(10),
-          child: ListTile(
-            leading: Icon(Icons.logout, color: Colors.black),
-            title: Text(
-              'Logout',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () => _logout(context),
-          ),
-        ),
-      ],
     );
   }
 
@@ -388,7 +456,7 @@ class _DashboardState extends State<Dashboard> {
         ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xFF163352),
             foregroundColor: Colors.white,
             shadowColor: Colors.grey[200],
             elevation: 5,
