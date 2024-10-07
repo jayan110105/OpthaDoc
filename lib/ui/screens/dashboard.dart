@@ -412,7 +412,7 @@ class _DashboardState extends State<Dashboard> {
         _buildDashboardButton(Icons.person_add, 'Registration', () {
           Navigator.pushNamed(context, '/registration');
         }),
-        if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
+        if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
             // Navigator.pushNamed(context, '/eyecheckup');
             Navigator.push(
@@ -420,7 +420,7 @@ class _DashboardState extends State<Dashboard> {
                 MaterialPageRoute(builder: (context) => User2(patientId: patientId))
             );
           }),
-        if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
+        if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.assignment, 'View Records', () {
             // Navigator.pushNamed(context, '/viewrecords');
             Navigator.push(
@@ -428,23 +428,27 @@ class _DashboardState extends State<Dashboard> {
                 MaterialPageRoute(builder: (context) => Records(routeName: 'ViewRecords', patientId: patientId))
             );
           }),
-        if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant')
+        if (role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.edit, 'Edit Records', () {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Records(routeName: 'EditRecords', patientId: patientId))
             );
           }),
-        if (role == 'Senior Doctor/ Consultant')
+        if (role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.event, 'Appointment', () {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Appointment(patientId: patientId))
             );
           }),
-        if (role == 'Senior Doctor/ Consultant')
+        if (role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.cloud_upload, 'Upload Data', () {
             _showUploadConfirmationDialog();
+          }),
+        if (role == 'Admin')
+          _buildDashboardButton(Icons.admin_panel_settings, 'Register User', () {
+            Navigator.pushNamed(context, '/register');
           }),
       ],
     );

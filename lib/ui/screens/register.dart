@@ -26,17 +26,20 @@ class _RegisterState extends State<Register> {
     'Optometrist',
     'Junior Doctor/ PostGraduate',
     'Senior Doctor/ Consultant',
+    'Admin',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE9E6DB),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Card(
-              elevation: 5,
+              color: Color(0xFFE9E6DB),
+              elevation: 10,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
@@ -54,42 +57,76 @@ class _RegisterState extends State<Register> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _buildTextField("Username", _usernameController, false),
-                      const SizedBox(height: 20),
-                      _buildTextField("Email", _emailController, false),
-                      const SizedBox(height: 20),
-                      _buildTextField("Password", _passwordController, true),
-                      const SizedBox(height: 20),
-                      DropdownButtonFormField<String>(
-                        value: _selectedRole,
-                        hint: const Text('Select Role'),
-                        decoration: _inputDecoration('Role'),
-                        items: _roles.map((String role) {
-                          return DropdownMenuItem<String>(
-                            value: role,
-                            child: Text(role),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedRole = newValue;
-                          });
-                        },
-                        validator: (value) => value == null ? 'Please select a role' : null,
+                      Row(
+                        children: [
+                          Icon(
+                              Icons.person,
+                              color: Color(0xFF163352),
+                              size: 30,
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(child: _buildTextField("Username", _usernameController, false)),
+                        ],
                       ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.mail,
+                            color: Color(0xFF163352),
+                            size: 30,
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(child: _buildTextField("Email", _emailController, false),),
+                        ],
+                      ),
+                      // const SizedBox(height: 20),
+                      // _buildTextField("Password", _passwordController, true),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.assignment_ind,
+                            color: Color(0xFF163352),
+                            size: 30,
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(
+                            child: DropdownButtonFormField<String>(
+                              dropdownColor: Color(0xFFE9E6DB),
+                              value: _selectedRole,
+                              hint: const Text('Select Role'),
+                              decoration: _inputDecoration('Role'),
+                              items: _roles.map((String role) {
+                                return DropdownMenuItem<String>(
+                                  value: role,
+                                  child: Text(role),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedRole = newValue;
+                                });
+                              },
+                              validator: (value) => value == null ? 'Please select a role' : null,
+                            ),
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 20),
                       _isLoading
                           ? const Center(
                         child: CircularProgressIndicator(
-                          color: Colors.black,
+                          color: Color(0xFF163352),
                         ),
                       )
                           : ElevatedButton(
                         onPressed: _register,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black,
+                          backgroundColor: Color(0xFF163352),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                           padding: const EdgeInsets.all(10),
                         ),
@@ -112,15 +149,16 @@ class _RegisterState extends State<Register> {
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelStyle: const TextStyle(
-        color: Colors.black,
+        color: Color(0xFF163352),
       ),
       labelText: label,
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(30),
       ),
-      focusedBorder: const OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide(
-          color: Colors.black,
+          color: Color(0xFF163352),
         ),
       ),
     );
@@ -128,7 +166,7 @@ class _RegisterState extends State<Register> {
 
   Widget _buildTextField(String label, TextEditingController controller, bool isPassword) {
     return TextFormField(
-      cursorColor: Colors.black,
+      cursorColor: Color(0xFF163352),
       controller: controller,
       obscureText: isPassword,
       decoration: _inputDecoration(label),
