@@ -59,6 +59,7 @@ class _User1State extends State<User1> {
         'phoneNumber': _phoneController.text.trim(),
         'address': _addressController.text.trim(),
         'imageUrl': imageUrl,
+        'assignedDoctor': '',
         'createdAt': Timestamp.now(),
       });
 

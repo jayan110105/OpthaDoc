@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
 import 'package:optha_doc/ui/screens/Records.dart';
+import 'package:optha_doc/ui/screens/ScheduleAppointment.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/services/Hive/patients.dart';
 import 'package:optha_doc/ui/screens/appointment.dart';
-import 'package:optha_doc/ui/screens/DoctorDetails.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -413,6 +413,12 @@ class _DashboardState extends State<Dashboard> {
         _buildDashboardButton(Icons.person_add, 'Registration', () {
           Navigator.pushNamed(context, '/registration');
         }),
+        _buildDashboardButton(Icons.schedule, 'Schedule', () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ScheduleAppointmentScreen(patientId: patientId,))
+          );
+        }),
         if (role == 'Optometrist' || role == 'Junior Doctor/ PostGraduate' || role == 'Senior Doctor/ Consultant' || role == 'Admin')
           _buildDashboardButton(Icons.visibility, 'Eye Checkup', () {
             // Navigator.pushNamed(context, '/eyecheckup');
@@ -450,13 +456,6 @@ class _DashboardState extends State<Dashboard> {
         if (role == 'Admin')
           _buildDashboardButton(Icons.admin_panel_settings, 'Register User', () {
             Navigator.pushNamed(context, '/register');
-          }),
-        if (role == 'Admin')
-          _buildDashboardButton(Icons.medical_services, 'Details', () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DoctorDetailsForm())
-            );
           }),
       ],
     );
