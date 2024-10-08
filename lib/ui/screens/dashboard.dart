@@ -90,25 +90,34 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _uploadDataToFirebase() async {
     try {
       Box<OptometryDetails> optometryBox = Hive.box('optometryDetails');
+      Box<Patients> patientBox = Hive.box('patients');
+
+      if (optometryBox.isEmpty && patientBox.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No data to upload'), backgroundColor: Colors.orange),
+        );
+        return;
+      }
+
       List<OptometryDetails> optometryDetailsList = optometryBox.values.toList();
+      List<Patients> patientList = patientBox.values.toList();
 
       for (var details in optometryDetailsList) {
         await FirebaseFirestore.instance.collection('optometryDetails').add(details.toMap());
       }
 
-      Box<Patients> patientBox = Hive.box('patients');
-      List<Patients>  patientList = patientBox.values.toList();
-
       for (var patient in patientList) {
-        // await FirebaseFirestore.instance.collection('patients').add(patient.toMap());
-        if(patient.aadhaarNumber != null && patient.aadhaarNumber != '') {
-          await FirebaseFirestore.instance.collection('patients').doc(
-              patient.aadhaarNumber).set(patient.toMap());
+        if (patient.aadhaarNumber != null && patient.aadhaarNumber != '') {
+          await FirebaseFirestore.instance.collection('patients').doc(patient.aadhaarNumber).set(patient.toMap());
         }
       }
 
+      // Clear Hive boxes after successful upload
+      await optometryBox.clear();
+      await patientBox.clear();
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Data uploaded successfully'), backgroundColor: Colors.green),
+        SnackBar(content: Text('Data uploaded and cleared successfully'), backgroundColor: Colors.green),
       );
     } catch (e) {
       Logger().e('Error uploading data: $e');
@@ -476,7 +485,17 @@ class _DashboardState extends State<Dashboard> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: onPressed,
+          onPressed:  () {
+            if (label == 'Appointment' || label == 'Eye Checkup' || label == 'View Records' || label == 'Edit Records') {
+              if (patientId.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please enter a valid Patient ID'), backgroundColor: Colors.red),
+                );
+                return;
+              }
+            }
+            onPressed();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF163352),
             foregroundColor: Colors.white,

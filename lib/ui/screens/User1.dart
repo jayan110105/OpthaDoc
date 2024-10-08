@@ -19,6 +19,8 @@ class _User1State extends State<User1> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _parentController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _complainController = TextEditingController();
+
 
   String? _selectedGender;
   bool _isLoading = false;
@@ -470,7 +472,7 @@ class _User1State extends State<User1> {
                   ],
                 ),
                 SizedBox(height: 10),
-                _buildTextArea('', _addressController),
+                _buildTextArea('', _complainController),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,

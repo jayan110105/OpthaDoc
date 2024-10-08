@@ -284,7 +284,17 @@ class _campDashboardState extends State<campDashboard> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: onPressed,
+          onPressed: () {
+            if (label == 'Appointment' || label == 'Eye Checkup' || label == 'View Records' || label == 'Edit Records') {
+              if (patientId.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Please enter a valid Patient ID'), backgroundColor: Colors.red),
+                );
+                return;
+              }
+            }
+            onPressed();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Color(0xFF163352),
             foregroundColor: Colors.white,

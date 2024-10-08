@@ -218,16 +218,17 @@ class _User2State extends State<User2> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(DVR, "R", (newValue) {
-                    setState(() {
-                      DVR = newValue;
-                    });
-                  }),
                   _buildDistanceVisionDropdown(DVL, "L", (newValue) {
                     setState(() {
                       DVL = newValue;
                     });
                   }),
+                  _buildDistanceVisionDropdown(DVR, "R", (newValue) {
+                    setState(() {
+                      DVR = newValue;
+                    });
+                  }),
+
                 ],
               ),
               SizedBox(height: 20,),
@@ -285,14 +286,14 @@ class _User2State extends State<User2> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
-                    setState(() {
-                      selectedDVR = newValue;
-                    });
-                  }),
                   _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
                     setState(() {
                       selectedDVL = newValue;
+                    });
+                  }),
+                  _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
+                    setState(() {
+                      selectedDVR = newValue;
                     });
                   }),
                 ]
@@ -307,16 +308,7 @@ class _User2State extends State<User2> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    _buildSignDropdown(selectedSignDVSpR, (newValue) {
-                      setState(() {
-                        selectedSignDVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", selectedDVSpR, (newValue) {
-                      setState(() {
-                        selectedDVSpR = newValue;
-                      });
-                    }),
+
                     _buildSignDropdown(selectedSignDVSpL, (newValue) {
                       setState(() {
                         selectedSignDVSpL = newValue;
@@ -327,14 +319,14 @@ class _User2State extends State<User2> {
                         selectedDVSpL = newValue;
                       });
                     }),
-                    _buildSignDropdown(selectedSignCylR, (newValue) {
+                    _buildSignDropdown(selectedSignDVSpR, (newValue) {
                       setState(() {
-                        selectedSignCylR = newValue;
+                        selectedSignDVSpR = newValue;
                       });
                     }),
-                    _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
+                    _buildDropdown(8, "Sp.", selectedDVSpR, (newValue) {
                       setState(() {
-                        selectedCylR = newValue;
+                        selectedDVSpR = newValue;
                       });
                     }),
                     _buildSignDropdown(selectedSignCylL, (newValue) {
@@ -345,6 +337,16 @@ class _User2State extends State<User2> {
                     _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
                       setState(() {
                         selectedCylL = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(selectedSignCylR, (newValue) {
+                      setState(() {
+                        selectedSignCylR = newValue;
+                      });
+                    }),
+                    _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
+                      setState(() {
+                        selectedCylR = newValue;
                       });
                     }),
                   ]
@@ -361,6 +363,12 @@ class _User2State extends State<User2> {
                   children: [
                     _buildTextLabel('Axis'),
                     // _buildTextField('R', _axisRController),
+                    _buildAxisWheel("Axis L", _axisLValue, (newValue) {
+                      setState(() {
+                        _axisLValue = newValue;
+                        _axisLController.text = newValue.toString();
+                      });
+                    }),
                     _buildAxisWheel("Axis R", _axisRValue, (newValue) {
                       setState(() {
                         _axisRValue = newValue;
@@ -368,12 +376,6 @@ class _User2State extends State<User2> {
                       });
                     }),
                     // _buildTextField('L', _axisLController),
-                    _buildAxisWheel("Axis L", _axisLValue, (newValue) {
-                      setState(() {
-                        _axisLValue = newValue;
-                        _axisLController.text = newValue.toString();
-                      });
-                    }),
                   ]
               ),
               SizedBox(height: 16,),
@@ -438,14 +440,14 @@ class _User2State extends State<User2> {
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   _buildTextLabel('Near Vision'),
-                  _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
-                    setState(() {
-                      selectedNVR = newValue;
-                    });
-                  }),
                   _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
                     setState(() {
                       selectedNVL = newValue;
+                    });
+                  }),
+                  _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                    setState(() {
+                      selectedNVR = newValue;
                     });
                   }),
                 ]
@@ -460,16 +462,6 @@ class _User2State extends State<User2> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  _buildSignDropdown(selectedSignNVSpR, (newValue) {
-                    setState(() {
-                      selectedSignNVSpR = newValue;
-                    });
-                  }),
-                  _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
-                    setState(() {
-                      selectedNVSpR = newValue;
-                    });
-                  }),
                   _buildSignDropdown(selectedSignNVSpL, (newValue) {
                     setState(() {
                       selectedSignNVSpL = newValue;
@@ -478,6 +470,16 @@ class _User2State extends State<User2> {
                   _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
                     setState(() {
                       selectedNVSpL = newValue;
+                    });
+                  }),
+                  _buildSignDropdown(selectedSignNVSpR, (newValue) {
+                    setState(() {
+                      selectedSignNVSpR = newValue;
+                    });
+                  }),
+                  _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
+                    setState(() {
+                      selectedNVSpR = newValue;
                     });
                   }),
                 ]
@@ -508,14 +510,14 @@ class _User2State extends State<User2> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildTextLabel('Distance Vision'),
-                    _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
-                      setState(() {
-                        CorrectedDVR = newValue;
-                      });
-                    }),
                     _buildDistanceVisionDropdown(CorrectedDVL, "L", (newValue) {
                       setState(() {
                         CorrectedDVL = newValue;
+                      });
+                    }),
+                    _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
+                      setState(() {
+                        CorrectedDVR = newValue;
                       });
                     }),
                   ]
@@ -530,16 +532,6 @@ class _User2State extends State<User2> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
-                      setState(() {
-                        CorrectedSignDVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
-                      setState(() {
-                        CorrectedDVSpR = newValue;
-                      });
-                    }),
                     _buildSignDropdown(CorrectedSignDVSpL, (newValue) {
                       setState(() {
                         CorrectedSignDVSpL = newValue;
@@ -550,14 +542,14 @@ class _User2State extends State<User2> {
                         CorrectedDVSpL = newValue;
                       });
                     }),
-                    _buildSignDropdown(CorrectedSignCylR, (newValue) {
+                    _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
                       setState(() {
-                        CorrectedSignCylR = newValue;
+                        CorrectedSignDVSpR = newValue;
                       });
                     }),
-                    _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
+                    _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
                       setState(() {
-                        CorrectedCylR = newValue;
+                        CorrectedDVSpR = newValue;
                       });
                     }),
                     _buildSignDropdown(CorrectedSignCylL, (newValue) {
@@ -568,6 +560,16 @@ class _User2State extends State<User2> {
                     _buildDropdown(6, "Cyl.", CorrectedCylL, (newValue) {
                       setState(() {
                         CorrectedCylL = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(CorrectedSignCylR, (newValue) {
+                      setState(() {
+                        CorrectedSignCylR = newValue;
+                      });
+                    }),
+                    _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
+                      setState(() {
+                        CorrectedCylR = newValue;
                       });
                     }),
                   ]
@@ -583,16 +585,16 @@ class _User2State extends State<User2> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildTextLabel('Axis'),
-                    _buildAxisWheel("Axis R", _CorrectedaxisLValue, (newValue) {
+                    _buildAxisWheel("Axis L", _CorrectedaxisLValue, (newValue) {
                       setState(() {
                         _CorrectedaxisLValue = newValue;
-                        _CorrectedAxisRController.text = newValue.toString();
+                        _CorrectedAxisLController.text = newValue.toString();
                       });
                     }),
-                    _buildAxisWheel("Axis L", _CorrectedaxisRValue, (newValue) {
+                    _buildAxisWheel("Axis R", _CorrectedaxisRValue, (newValue) {
                       setState(() {
                         _CorrectedaxisRValue = newValue;
-                        _CorrectedAxisLController.text = newValue.toString();
+                        _CorrectedAxisRController.text = newValue.toString();
                       });
                     }),
                   ]
@@ -658,14 +660,14 @@ class _User2State extends State<User2> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _buildTextLabel('Near Vision'),
-                    _buildNearVisionDropdown(CorrectedNVR, "R", (newValue) {
-                      setState(() {
-                        CorrectedNVR = newValue;
-                      });
-                    }),
                     _buildNearVisionDropdown(CorrectedNVL, "L", (newValue) {
                       setState(() {
                         CorrectedNVL = newValue;
+                      });
+                    }),
+                    _buildNearVisionDropdown(CorrectedNVR, "R", (newValue) {
+                      setState(() {
+                        CorrectedNVR = newValue;
                       });
                     }),
                   ]
@@ -680,16 +682,6 @@ class _User2State extends State<User2> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    _buildSignDropdown(CorrectedSignNVSpR, (newValue) {
-                      setState(() {
-                        CorrectedSignNVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedNVSpR, (newValue) {
-                      setState(() {
-                        CorrectedNVSpR = newValue;
-                      });
-                    }),
                     _buildSignDropdown(CorrectedSignNVSpL, (newValue) {
                       setState(() {
                         CorrectedSignNVSpL = newValue;
@@ -698,6 +690,16 @@ class _User2State extends State<User2> {
                     _buildDropdown(8, "Sp.", CorrectedNVSpL, (newValue) {
                       setState(() {
                         CorrectedNVSpL = newValue;
+                      });
+                    }),
+                    _buildSignDropdown(CorrectedSignNVSpR, (newValue) {
+                      setState(() {
+                        CorrectedSignNVSpR = newValue;
+                      });
+                    }),
+                    _buildDropdown(8, "Sp.", CorrectedNVSpR, (newValue) {
+                      setState(() {
+                        CorrectedNVSpR = newValue;
                       });
                     }),
                   ]
