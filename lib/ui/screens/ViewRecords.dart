@@ -296,13 +296,6 @@ class Viewrecords extends StatelessWidget {
                 ],
               ),
               pw.SizedBox(height: 20),
-              // Signature line
-              // pw.Row(
-              //   mainAxisAlignment: pw.MainAxisAlignment.end,
-              //   children: [
-              //     pw.Text("Signature: ________________"),
-              //   ],
-              // ),
             ],
           );
         },
