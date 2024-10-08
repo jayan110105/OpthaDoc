@@ -15,20 +15,17 @@ class campDashboard extends StatefulWidget {
 class _campDashboardState extends State<campDashboard> {
   String patientId = '';
 
+  String imageUrl = '';
+
+  String gender = '';
+
+  String name = '';
+
+  String age = '';
+
   TextEditingController _patientIdController = TextEditingController();
 
   final FocusNode _focusNode = FocusNode();
-
-  String _getGreeting() {
-    int hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 17) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
-  }
 
   Future<void> _checkPatientId(BuildContext context) async {
     String id = _patientIdController.text;
@@ -38,12 +35,18 @@ class _campDashboardState extends State<campDashboard> {
             (patient) => patient.aadhaarNumber == id
       );
 
+      final patientDetails = patient.toMap();
+
       if (patient != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Patient ID $id found!'), backgroundColor: Colors.green),
         );
         setState(() {
           patientId = id;
+          imageUrl = patientDetails['imageUrl'] ?? '';
+          gender = patientDetails['gender'] ?? '';
+          name = patientDetails['name'] ?? '';
+          age = patientDetails['age'] ?? '';
         });
         _focusNode.unfocus();
       } else {
@@ -62,9 +65,9 @@ class _campDashboardState extends State<campDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFE9E6DB),
       appBar: _buildAppBar(),
-      body: _buildDashboardContent(context, _getGreeting()),
+      body: _buildDashboardContent(context),
       );
   }
 
@@ -76,51 +79,111 @@ class _campDashboardState extends State<campDashboard> {
     );
   }
 
-  Widget _buildDashboardContent(BuildContext context, String greeting) {
+  Widget _buildDashboardContent(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        color: Colors.white,
+        color: Color(0xFFE9E6DB),
         child: Column(
           children: [
+            SizedBox(height: 20),
             Container(
-              color: Colors.black,
               padding: EdgeInsets.all(16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    greeting,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                  imageUrl != null && imageUrl != '' ? CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(imageUrl),
+                    backgroundColor: Colors.transparent,
+                  )
+                      : CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Color(0xFFBBC2B4),
+                    child: Icon(
+                      gender =="Female" ? Icons.face_3: Icons.face,
+                      color: Color(0xFF163352),
+                      size: 80,
                     ),
                   ),
+                  SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name == "" ? 'Name' : '$name',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Icon(
+                            gender == "" ? Icons.transgender : gender == "Male" ? Icons.male : Icons.female,
+                            color: Color(0xFF163352),
+                            size: 20.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            gender == "" ? "Gender" : '$gender',
+                            style: TextStyle(
+                              color: Color(0xFF163352),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5,),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.cake,
+                            color: Color(0xFF163352),
+                            size: 20.0,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            age == "" ? 'Age' : '$age',
+                            style: TextStyle(
+                              color: Color(0xFF163352),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Color(0xFFBBC2B4),
+                  border: Border.all(color: Color(0xFF163352)),
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _patientIdController,
-                        focusNode: _focusNode,
-                        cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          hintText: 'Enter Patient ID',  // Placeholder text
-                          hintStyle: TextStyle(
-                            color: Colors.grey[700],
+                      child: Container(
+                        padding: EdgeInsets.only(left: 16),
+                        child: TextField(
+                          controller: _patientIdController,
+                          focusNode: _focusNode,
+                          cursorColor: Color(0xFF163352),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            hintText: 'Enter Patient ID',  // Placeholder text
+                            hintStyle: TextStyle(
+                              color:  Color(0xFF163352),
+                            ),
                           ),
                         ),
                       ),
@@ -138,11 +201,11 @@ class _campDashboardState extends State<campDashboard> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.grey[700],
-                          backgroundColor: Colors.grey[200], // Button text color
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFF163352), // Button text color
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
                           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         ),
@@ -168,8 +231,8 @@ class _campDashboardState extends State<campDashboard> {
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200], // Background color
-                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                  color: Color(0xFFBBC2B4), // Background color
+                  borderRadius: BorderRadius.circular(30.0), // Rounded corners
                 ),
                 child: Center(
                   child: _buildDashboardGrid(context),
@@ -223,7 +286,7 @@ class _campDashboardState extends State<campDashboard> {
         ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
+            backgroundColor: Color(0xFF163352),
             foregroundColor: Colors.white,
             shadowColor: Colors.grey[200],
             elevation: 5,
