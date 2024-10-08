@@ -31,6 +31,7 @@ class Patients extends HiveObject {
   @HiveField(8)
   String? imagePath;
 
+
   Patients({
     required this.name,
     required this.age,
@@ -47,6 +48,7 @@ class Patients extends HiveObject {
     return {
       'name': name,
       'age': age,
+      'assignedDoctor': '',
       'aadhaarNumber': aadhaarNumber,
       'phoneNumber': phoneNumber,
       'parentSpouseName': parentSpouseName,
