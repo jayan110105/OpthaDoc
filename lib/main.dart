@@ -85,79 +85,105 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFE9E6DB),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/homepage.jpg', // Replace with your image path
-              height: 300, // Adjust the size as needed
-            ),
             const Text(
               'OpthaDoc',
               style: TextStyle(
-                color: Colors.black,
+                color: Color(0xFF163352),
                 fontWeight: FontWeight.bold,
-                fontSize: 50,
+                fontSize: 62,
               ),
             ),
             const Text(
-              'Opthalmology EMR',
+              'Opthalmology EMR System',
               style: TextStyle(
-                color: Colors.black,
+                color: Color(0xFF163352),
                 fontWeight: FontWeight.w500,
                 fontSize: 23,
               ),
             ),
-            const SizedBox(height: 100),
+            Image.asset(
+              'assets/images/homepage.jpg', // Replace with your image path
+              height: 350, // Adjust the size as needed
+            ),
+            const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/campdashboard');
-                      },
-                      child: const Text('Camp'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF163352),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/campdashboard');
+                            },
+                            icon: Icon(Icons.health_and_safety),
+                            color: Colors.white,
+                            iconSize: 40,
+                          ),
                         ),
-                        minimumSize: Size(150, 50), // Ensure both buttons have the same size
-                      ),
+                        const SizedBox(height: 8.0),
+                        const Text(
+                          'Camp',
+                          style: TextStyle(
+                            color: Color(0xFF163352),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 40),
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (await isConnectedToInternet()) {
-                          Navigator.pushNamed(context, '/login');
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('No internet connection'),
-                                backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Hospital'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF163352),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            onPressed: () async {
+                              if (await isConnectedToInternet()) {
+                                Navigator.pushNamed(context, '/login');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('No internet connection'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            },
+                            icon: Icon(Icons.local_hospital),
+                            color: Colors.white,
+                            iconSize: 40,
+                          ),
                         ),
-                        minimumSize: Size(150, 50), // Ensure both buttons have the same size
-                      ),
+                        const SizedBox(height: 8.0),
+                        const Text(
+                          'Hospital',
+                          style: TextStyle(
+                            color: Color(0xFF163352),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

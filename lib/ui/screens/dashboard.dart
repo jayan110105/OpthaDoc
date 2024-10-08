@@ -8,7 +8,6 @@ import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:hive/hive.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/services/Hive/patients.dart';
-import 'package:optha_doc/ui/screens/appointment.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -413,7 +412,7 @@ class _DashboardState extends State<Dashboard> {
         _buildDashboardButton(Icons.person_add, 'Registration', () {
           Navigator.pushNamed(context, '/registration');
         }),
-        _buildDashboardButton(Icons.schedule, 'Schedule', () {
+        _buildDashboardButton(Icons.event, 'Appointment', () {
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ScheduleAppointmentScreen(patientId: patientId,))
@@ -440,13 +439,6 @@ class _DashboardState extends State<Dashboard> {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Records(routeName: 'EditRecords', patientId: patientId))
-            );
-          }),
-        if (role == 'Senior Doctor/ Consultant' || role == 'Admin')
-          _buildDashboardButton(Icons.event, 'Appointment', () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Appointment(patientId: patientId))
             );
           }),
         if (role == 'Senior Doctor/ Consultant' || role == 'Admin')

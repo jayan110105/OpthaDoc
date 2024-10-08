@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:optha_doc/ui/screens/EditRecords.dart';
 import 'package:optha_doc/ui/screens/User2.dart';
 import 'package:optha_doc/ui/screens/ViewRecords.dart';
-import 'package:optha_doc/ui/screens/appointment.dart';
+import 'package:optha_doc/ui/Unused/appointment.dart';
 
 class SearchPatient extends StatefulWidget {
 

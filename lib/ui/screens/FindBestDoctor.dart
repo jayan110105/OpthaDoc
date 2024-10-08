@@ -16,12 +16,16 @@ Future<String> findBestDoctor(String patientId, DateTime appointmentDate) async 
     // Check if the assigned doctor has free slots
     bool hasFreeSlots = await _hasFreeSlots(assignedDoctorId!, appointmentDate);
     if (hasFreeSlots) {
+      print('Best Doctor: $assignedDoctorId');
+
       return assignedDoctorId;
     }
   }
 
   // If new patient or assigned doctor has no free slots, find the doctor with least appointments
   String bestDoctorId = await _findDoctorWithLeastAppointments(appointmentDate);
+
+  print('Best Doctor: $bestDoctorId');
 
   return bestDoctorId;
 }
@@ -73,6 +77,5 @@ Future<String> _findDoctorWithLeastAppointments(DateTime date) async {
       bestDoctorId = doctorId;
     }
   }
-  print('Best Doctor: $bestDoctorId');
   return bestDoctorId;
 }

@@ -17,6 +17,7 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
   String? selectedDoctorId;
 
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _doctorController = TextEditingController();
 
   // Function to load available slots
   String getDayName(int weekday) {
@@ -33,6 +34,12 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
 
     // Fetch the doctor's availability details
     DocumentSnapshot doctorDoc = await FirebaseFirestore.instance.collection('doctors').doc(doctorId).get();
+
+    print(doctorDoc['doctorId']);
+
+    DocumentSnapshot docName = await FirebaseFirestore.instance.collection('users').doc(doctorDoc['doctorId']).get();
+    String doctorName = docName['username'];
+    _doctorController.text = doctorName;
 
     String dayName = getDayName(selectedDate.weekday);
     Map<String, dynamic> workingHours = doctorDoc['workingHours'][dayName];
@@ -139,10 +146,6 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
         padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
         child: Column(
           children: [
-            // Container(
-            //     color: Color(0xFFE9E6DB),
-            //     child: SizedBox(height: 20)
-            // ),
             Container(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               color: Color(0xFFE9E6DB),
@@ -207,6 +210,39 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
                           _loadAvailableSlots();
                         }
                       },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 20, bottom: 20),
+              color: Color(0xFFE9E6DB),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.health_and_safety,
+                    color: Color(0xFF163352),
+                    size: 35,
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _doctorController,
+                      cursorColor: Color(0xFF163352),
+                      readOnly: true,
+                      decoration: InputDecoration(
+                        labelText: 'Doctor',
+                        labelStyle: TextStyle(color: Color(0xFF163352)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Color(0xFF163352)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Color(0xFF163352)),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -312,13 +348,28 @@ class _ScheduleAppointmentScreenState extends State<ScheduleAppointmentScreen> {
 
   Future<bool> _bookAppointment(DateTime start, DateTime end) async {
     try {
-      await FirebaseFirestore.instance.collection('appointments').add({
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // Add the appointment
+      DocumentReference appointmentRef = FirebaseFirestore.instance.collection(
+          'appointments').doc();
+      batch.set(appointmentRef, {
         'patientId': widget.patientId,
         'doctorId': selectedDoctorId,
         'start': start,
         'end': end,
         'date': selectedDate.toIso8601String().split('T')[0],
       });
+
+      // Update the patient's assigned doctor
+      DocumentReference patientRef = FirebaseFirestore.instance.collection(
+          'patients').doc(widget.patientId);
+      batch.update(patientRef, {
+        'assignedDoctor': selectedDoctorId,
+      });
+
+      // Commit the batch
+      await batch.commit();
       return true;
     } catch (e) {
       print('Error booking appointment: $e');
