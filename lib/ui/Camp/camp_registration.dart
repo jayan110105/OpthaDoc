@@ -212,115 +212,288 @@ class _campRegistrationState extends State<campRegistration> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Icon(Icons.person_add),
-            SizedBox(width: 8),
-            Text("New patient record"),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      File? imageFile = await getImage();
-                      if (imageFile != null) {
-                        setState(() {
-                          _image = imageFile;
-                        });
-                      }
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.black26,
-                      radius: 60,
-                      backgroundImage: _image != null ? FileImage(_image!) : null,
-                      child: _image == null
-                          ? Icon(Icons.camera_alt, color: Colors.white, size: 40)
-                          : null,
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        _buildTextField('Patient Name', _nameController),
-                        const SizedBox(height: 20),
-                        _buildTextField('Age', _ageController),
-                      ],
-                    ),
-                  ),
-                ],
+          backgroundColor: Color(0xFFE9E6DB),
+          title: Center(
+            child: Text(
+              "New patient record",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color:Color(0xFF163352),
+              ), // Reduced font size
+            ),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF163352),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                value: _selectedGender,
-                hint: const Text('Select Gender'),
-                decoration: InputDecoration(
-                  labelStyle: const TextStyle(
-                    color: Colors.black,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                    ),
-                  ),
+              child: IconButton(
+                icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white
                 ),
-                items: _gender.map((String role) {
-                  return DropdownMenuItem<String>(
-                    value: role,
-                    child: Text(role),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedGender = newValue;
-                  });
+                onPressed: () {
+                  Navigator.of(context).pop();
                 },
               ),
-              const SizedBox(height: 20),
-              _buildTextField('Aadhar Card No.', _aadhaarController),
-              const SizedBox(height: 20),
-              _buildTextField('Parent/Spouse Name', _parentController),
-              const SizedBox(height: 20),
-              _buildTextField('Phone No.', _phoneController, prefixText: '+91 '),
-              const SizedBox(height: 20),
-              _buildTextArea('Address', _addressController),
-              const SizedBox(height: 20),
-              _buildTextArea('Chief Complaint', _addressController),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: _buildTextButton(
-                  icon: Icons.photo_camera,
-                  label: "Scan Aadhar Card",
-                  onPressed: scanText,
+            ),
+          )
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Color(0xFFE9E6DB),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        File? imageFile = await getImage();
+                        if (imageFile != null) {
+                          setState(() {
+                            _image = imageFile;
+                          });
+                        }
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xFFBBC2B4),
+                        radius: 80,
+                        backgroundImage: _image != null ? FileImage(_image!) : null,
+                        child: _image == null
+                            ? Icon(Icons.camera_alt, color: Color(0xFF163352), size: 60)
+                            : null,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Color(0xFF163352),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                  'Patient Name',
+                                  style: TextStyle(
+                                    color: Color(0xFF163352),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          _buildTextField('', _nameController),
+                          const SizedBox(height: 20),Row(
+                            children: [
+                              Icon(
+                                Icons.cake,
+                                color: Color(0xFF163352),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                  'Age',
+                                  style: TextStyle(
+                                    color: Color(0xFF163352),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  )
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          _buildTextField('', _ageController),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildOutlinedButton("Cancel", onPressed: () {}),
-                  _isLoading
-                      ? Container(
-                      width: 200,
-                      child: Center(
-                          child: CircularProgressIndicator(color: Colors.black,)
-                      )
-                  )
-                      : _buildFilledButton("Save", onPressed: savePatientRecord),
-                ],
-              ),
-            ],
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.wc,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Gender',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    SizedBox(width: 80,),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        dropdownColor: Color(0xFFE9E6DB) ,
+                        value: _selectedGender,
+                        hint: const Text('Select Gender'),
+                        decoration: InputDecoration(
+                          labelStyle: const TextStyle(
+                            color: Color(0xFF163352),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(
+                              color: Color(0xFF163352),
+                            ),
+                          ),
+                        ),
+                        items: _gender.map((String role) {
+                          return DropdownMenuItem<String>(
+                            value: role,
+                            child: Text(role),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedGender = newValue;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.credit_card,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Aadhar Card',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    SizedBox(width: 30,),
+                    Expanded(child: _buildTextField('', _aadhaarController)),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.family_restroom,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Parent/Spouse',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(child: _buildTextField('', _parentController)),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.phone,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Phone No.',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                    SizedBox(width: 60),
+                    Expanded(child: _buildTextField('', _phoneController, prefixText: '+91 ')),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.home,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Address',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                _buildTextArea('', _addressController),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.assignment,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                        'Chief Complaint',
+                        style: TextStyle(
+                          color: Color(0xFF163352),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        )
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                _buildTextArea('', _addressController),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: _buildTextButton(
+                    icon: Icons.photo_camera,
+                    label: "Scan Aadhar Card",
+                    onPressed: scanText,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildOutlinedButton("Cancel", onPressed: () {}),
+                    _isLoading
+                        ? Container(
+                        width: 200,
+                        child: Center(
+                            child: CircularProgressIndicator(color: Color(0xFF163352),)
+                        )
+                    )
+                        : _buildFilledButton("Save", onPressed: savePatientRecord),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -329,20 +502,21 @@ class _campRegistrationState extends State<campRegistration> {
 
   Widget _buildTextField(String labelText, TextEditingController controller, {String? prefixText}) {
     return TextField(
-      cursorColor: Colors.black,
+      cursorColor: Color(0xFF163352),
       controller: controller,
       decoration: InputDecoration(
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Color(0xFF163352),
         ),
         labelText: labelText,
         prefixText: prefixText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide(
-            color: Colors.black,
+            color: Color(0xFF163352),
           ),
         ),
       ),
@@ -351,20 +525,21 @@ class _campRegistrationState extends State<campRegistration> {
 
   Widget _buildTextArea(String labelText, TextEditingController controller, {String? prefixText}) {
     return TextField(
-      cursorColor: Colors.black,
+      cursorColor: Color(0xFF163352),
       controller: controller,
       maxLines: 5, // Set maxLines to a higher value for a text area
       decoration: InputDecoration(
         alignLabelWithHint: true,
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Color(0xFF163352),
         ),
         labelText: labelText,
         prefixText: prefixText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide(
             color: Colors.black,
           ),
@@ -379,9 +554,9 @@ class _campRegistrationState extends State<campRegistration> {
       icon: Icon(icon, color: Colors.white),
       label: Text(label, style: TextStyle(color: Colors.white)),
       style: TextButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF163352),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
         ),
         padding: const EdgeInsets.all(10),
       ),
@@ -391,16 +566,16 @@ class _campRegistrationState extends State<campRegistration> {
   Widget _buildOutlinedButton(String label, {required VoidCallback onPressed}) {
     return TextButton(
       style: TextButton.styleFrom(
+        backgroundColor: Color(0xFFBBC2B4),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.black, width: 0.5),
+          borderRadius: BorderRadius.circular(30),
         ),
         padding: const EdgeInsets.all(10),
       ),
       onPressed: onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Text(label, style: TextStyle(color: Colors.black)),
+        child: Text(label, style: TextStyle(color: Color(0xFF163352))),
       ),
     );
   }
@@ -408,9 +583,9 @@ class _campRegistrationState extends State<campRegistration> {
   Widget _buildFilledButton(String label, {required VoidCallback onPressed}) {
     return TextButton(
       style: TextButton.styleFrom(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF163352),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(30),
         ),
         padding: const EdgeInsets.all(10),
       ),
