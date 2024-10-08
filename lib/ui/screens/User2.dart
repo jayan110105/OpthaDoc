@@ -261,9 +261,10 @@ class _User2State extends State<User2> {
                         ),
                         hintText: 'Enter Complaint',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        focusedBorder: const OutlineInputBorder(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
                             color: Color(0xFF163352),
                           ),
@@ -391,9 +392,10 @@ class _User2State extends State<User2> {
                         ),
                         labelText: 'Enter IPD value',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        focusedBorder: const OutlineInputBorder(
+                        focusedBorder:  OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
                             color: Color(0xFF163352),
                           ),
