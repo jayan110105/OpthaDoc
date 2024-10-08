@@ -72,41 +72,73 @@ class CampRecords extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Optometry Records'),
-      ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: fetchOptometryDetails(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Colors.black));
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No records found.'));
-          } else {
-            final records = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView.builder(
-                itemCount: records.length,
-                itemBuilder: (context, index) {
-                  final record = records[index];
-                  return GestureDetector(
-                    onTap: () => onCardTap(context, record),
-                    child: _buildCard('Created At ${formatDate(record['createdAt'])}', formatTimestamp(record['createdAt'])),
-                  );
+          backgroundColor: Color(0xFFE9E6DB),
+          title: Center(
+            child: Text(
+              "Optometry Records",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color:Color(0xFF163352),
+              ), // Reduced font size
+            ),
+          ),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color(0xFF163352),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
                 },
               ),
-            );
-          }
-        },
+            ),
+          )
+      ),
+      body: Container(
+        color: Color(0xFFE9E6DB),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: fetchOptometryDetails(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator(color: Colors.black));
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text('No records found.'));
+            } else {
+              final records = snapshot.data!;
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: records.length,
+                  itemBuilder: (context, index) {
+                    final record = records[index];
+                    return GestureDetector(
+                      onTap: () => onCardTap(context, record),
+                      child: _buildCard('Created At ${formatDate(record['createdAt'])}', formatTimestamp(record['createdAt'])),
+                    );
+                  },
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 
   Widget _buildCard(String title, String subtitle) {
     return Card(
-      color: Colors.black87,
+      elevation: 4.0,
+      color: Color(0xFFE9E6DB),
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         title: Text(
@@ -114,14 +146,14 @@ class CampRecords extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
-            color: Colors.white,
+            color: Color(0xFF163352),
           ),
         ),
         subtitle: Text(
           subtitle,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.white,
+            color:Color(0xFF163352),
           ),
         ),
       ),
