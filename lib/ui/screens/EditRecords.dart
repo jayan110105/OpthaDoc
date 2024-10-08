@@ -353,9 +353,10 @@ class _EditRecordsState extends State<EditRecords> {
                           ),
                           hintText: 'Enter Complaint',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          focusedBorder: const OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide(
                               color: Color(0xFF163352),
                             ),
@@ -483,9 +484,10 @@ class _EditRecordsState extends State<EditRecords> {
                           ),
                           labelText: 'IPD',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          focusedBorder: const OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide(
                               color: Color(0xFF163352),
                             ),
@@ -704,9 +706,10 @@ class _EditRecordsState extends State<EditRecords> {
                           ),
                           labelText: 'IPD',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          focusedBorder: const OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
                             borderSide: BorderSide(
                               color: Color(0xFF163352),
                             ),
