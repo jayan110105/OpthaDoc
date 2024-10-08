@@ -124,7 +124,14 @@ class _DashboardState extends State<Dashboard> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Upload Data'),
+          backgroundColor: Color(0xFFE9E6DB),
+          title: Text(
+              'Upload Data',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF163352),
+              ),
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -134,13 +141,25 @@ class _DashboardState extends State<Dashboard> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF163352),
+                  ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Upload'),
+              child: Text(
+                  'Upload',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF163352),
+                  ),
+                ),
               onPressed: () {
                 Navigator.of(context).pop();
                 _uploadDataToFirebase();
