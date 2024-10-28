@@ -378,13 +378,22 @@ class Viewrecords extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(data['name']??'John Doe', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                            Text('Age : ${data['age'] ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                            Text('ID: ${data['patientId']}', style: TextStyle( fontSize: 18)),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  data['name']??'John Doe',
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24)
+                              ),
+                              Text('Age : ${data['age'] ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                              Text('ID: ${data['patientId']}', style: TextStyle( fontSize: 18)),
+                            ],
+                          ),
                         )
                       ],
                     ),

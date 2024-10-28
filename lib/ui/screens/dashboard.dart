@@ -287,56 +287,60 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                   SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name == "" ? 'Name' : '$name',
-                        style: TextStyle(
-                          color: Color(0xFF163352),
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name == "" ? 'Name' : '$name',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: TextStyle(
+                            color: Color(0xFF163352),
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Icon(
-                            gender == "" ? Icons.transgender : gender == "Male" ? Icons.male : Icons.female,
-                            color: Color(0xFF163352),
-                            size: 20.0,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            gender == "" ? "Gender" : '$gender',
-                            style: TextStyle(
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Icon(
+                              gender == "" ? Icons.transgender : gender == "Male" ? Icons.male : Icons.female,
                               color: Color(0xFF163352),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                              size: 20.0,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.cake,
-                            color: Color(0xFF163352),
-                            size: 20.0,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            age == "" ? 'Age' : '$age',
-                            style: TextStyle(
+                            SizedBox(width: 10),
+                            Text(
+                              gender == "" ? "Gender" : '$gender',
+                              style: TextStyle(
+                                color: Color(0xFF163352),
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.cake,
                               color: Color(0xFF163352),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                              size: 20.0,
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            SizedBox(width: 10),
+                            Text(
+                              age == "" ? 'Age' : '$age',
+                              style: TextStyle(
+                                color: Color(0xFF163352),
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),
@@ -515,6 +519,7 @@ class _DashboardState extends State<Dashboard> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),

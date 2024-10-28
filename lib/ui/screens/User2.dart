@@ -88,8 +88,8 @@ class _User2State extends State<User2> {
         'Remarks': selectedRemarks,
         'DVSpR': '$selectedSignDVSpR$selectedDVSpR',
         'DVSpL': '$selectedSignDVSpR$selectedDVSpL',
-        'NVSpR': '$selectedSignNVSpR$selectedNVSpR',
-        'NVSpL': '$selectedSignNVSpR$selectedNVSpL',
+        'NVSpR': '+$selectedNVSpR',
+        'NVSpL': '+$selectedNVSpL',
         'CylR': '$selectedSignCylR$selectedCylR',
         'CylL': '$selectedSignCylL$selectedCylL',
         'DVR': DVR,
@@ -104,8 +104,8 @@ class _User2State extends State<User2> {
         'BriefComplaint': _BriefComplaintController.text,
         'CorrectedDVSpR': '$CorrectedSignDVSpR$CorrectedDVSpR',
         'CorrectedDVSpL': '$CorrectedSignDVSpL$CorrectedDVSpL',
-        'CorrectedNVSpR': '$CorrectedSignNVSpR$CorrectedNVSpR',
-        'CorrectedNVSpL': '$CorrectedSignNVSpL$CorrectedNVSpL',
+        'CorrectedNVSpR': '+$CorrectedNVSpR',
+        'CorrectedNVSpL': '+$CorrectedNVSpL',
         'CorrectedCylR': '$CorrectedSignCylR$CorrectedCylR',
         'CorrectedCylL': '$CorrectedSignCylL$CorrectedCylL',
         'CorrectedDVR': CorrectedDVR,
@@ -140,6 +140,7 @@ class _User2State extends State<User2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFE9E6DB),
       appBar: AppBar(
           backgroundColor: Color(0xFFE9E6DB),
         title: Center(
@@ -177,534 +178,548 @@ class _User2State extends State<User2> {
           color: Color(0xFFE9E6DB),
           child: Column(
             children: [
-              GridView.count(
-              crossAxisCount: 3,
-              childAspectRatio: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                const SizedBox(),
-                // Center(child: _buildEyeLabel("RIGHT Eye")),
-                // Center(child: _buildEyeLabel("LEFT Eye")),
-                Center(child: Image.asset('assets/images/eyeL.png')),
-                Center(child: Image.asset('assets/images/eyeR.png')),
-                ]
-              ),
-              // Divider(),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              ExpansionTile(
+                iconColor: Color(0xFF163352),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.visibility_off,
+                      size: 30.0,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 20,),
+                    _buildEyeLabel("Without Glasses"),
+                  ],
+                ),
                 children: [
-                  Icon(
-                    Icons.visibility_off,
-                    size: 30.0,
-                    color: Color(0xFF163352),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const SizedBox(),
+                        // Center(child: _buildEyeLabel("RIGHT Eye")),
+                        // Center(child: _buildEyeLabel("LEFT Eye")),
+                        Center(child: Image.asset('assets/images/eyeR.png')),
+                        Center(child: Image.asset('assets/images/eyeL.png')),
+                      ]
                   ),
-                  SizedBox(width: 20,),
-                  _buildEyeLabel("Without Aid"),
-                ],
-              ),
-              SizedBox(height: 20,),
-              GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(DVL, "L", (newValue) {
-                    setState(() {
-                      DVL = newValue;
-                    });
-                  }),
-                  _buildDistanceVisionDropdown(DVR, "R", (newValue) {
-                    setState(() {
-                      DVR = newValue;
-                    });
-                  }),
-
-                ],
+                  // Divider(),
+                  SizedBox(height: 20,),
+                  GridView.count(
+                    crossAxisCount: 3,
+                    childAspectRatio: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      _buildTextLabel('Distance Vision'),
+                      _buildDistanceVisionDropdown(DVR, "R", (newValue) {
+                        setState(() {
+                          DVR = newValue;
+                        });
+                      }),
+                      _buildDistanceVisionDropdown(DVL, "L", (newValue) {
+                        setState(() {
+                          DVL = newValue;
+                        });
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                ]
               ),
               SizedBox(height: 20,),
               Divider(),
               SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              ExpansionTile(
+                  iconColor: Color(0xFF163352),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.visibility,
+                      size: 30.0,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 20,),
+                    _buildEyeLabel("With Patient Glasses"),
+                  ],
+                ),
                 children: [
-                  Icon(
-                    Icons.visibility,
-                    size: 30.0,
-                    color: Color(0xFF163352),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const SizedBox(),
+                        // Center(child: _buildEyeLabel("RIGHT Eye")),
+                        // Center(child: _buildEyeLabel("LEFT Eye")),
+                        Center(child: Image.asset('assets/images/eyeR.png')),
+                        Center(child: Image.asset('assets/images/eyeL.png')),
+                      ]
                   ),
-                  SizedBox(width: 20,),
-                  _buildEyeLabel("With Aid"),
-                ],
-              ),
-              SizedBox(height: 16,),
-              Row(
-                children: [
-                  _buildTextLabel("Brief Complaint"),
-                  SizedBox(width: 45,),
-                  Container(
-                    width: 215,
-                    child: TextField(
-                      controller: _BriefComplaintController,
-                      cursorColor: Color(0xFF163352),
-                      decoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                          color: Color(0xFF163352),
-                        ),
-                        hintText: 'Enter Complaint',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
-                            color: Color(0xFF163352),
+                  SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      _buildTextLabel("Brief Complaint"),
+                      SizedBox(width: 45,),
+                      Container(
+                        width: 190,
+                        child: TextField(
+                          controller: _BriefComplaintController,
+                          cursorColor: Color(0xFF163352),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // Change font weight here
+                          ),
+                          decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                              color: Color(0xFF163352),
+                            ),
+                            hintText: 'Enter Complaint',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: Color(0xFF163352),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _buildTextLabel('Distance Vision'),
-                  _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
-                    setState(() {
-                      selectedDVL = newValue;
-                    });
-                  }),
-                  _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
-                    setState(() {
-                      selectedDVR = newValue;
-                    });
-                  }),
-                ]
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
+                  SizedBox(height: 16,),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Distance Vision'),
+                        _buildDistanceVisionDropdown(selectedDVR, "R", (newValue) {
+                          setState(() {
+                            selectedDVR = newValue;
+                          });
+                        }),
+                        _buildDistanceVisionDropdown(selectedDVL, "L", (newValue) {
+                          setState(() {
+                            selectedDVL = newValue;
+                          });
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 16,),
+                  GridView.count(
+                      crossAxisCount: 4,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
 
-                    _buildSignDropdown(selectedSignDVSpL, (newValue) {
-                      setState(() {
-                        selectedSignDVSpL = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", selectedDVSpL, (newValue) {
-                      setState(() {
-                        selectedDVSpL = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(selectedSignDVSpR, (newValue) {
-                      setState(() {
-                        selectedSignDVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", selectedDVSpR, (newValue) {
-                      setState(() {
-                        selectedDVSpR = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(selectedSignCylL, (newValue) {
-                      setState(() {
-                        selectedSignCylL = newValue;
-                      });
-                    }),
-                    _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
-                      setState(() {
-                        selectedCylL = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(selectedSignCylR, (newValue) {
-                      setState(() {
-                        selectedSignCylR = newValue;
-                      });
-                    }),
-                    _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
-                      setState(() {
-                        selectedCylR = newValue;
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildTextLabel('Axis'),
-                    // _buildTextField('R', _axisRController),
-                    _buildAxisWheel("Axis L", _axisLValue, (newValue) {
-                      setState(() {
-                        _axisLValue = newValue;
-                        _axisLController.text = newValue.toString();
-                      });
-                    }),
-                    _buildAxisWheel("Axis R", _axisRValue, (newValue) {
-                      setState(() {
-                        _axisRValue = newValue;
-                        _axisRController.text = newValue.toString();
-                      });
-                    }),
-                    // _buildTextField('L', _axisLController),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              Row(
-                children: [
-                  _buildTextLabel("IPD"),
-                  SizedBox(width: 125,),
-                  Container(
-                    width: 215,
-                    child: TextField(
-                      controller: _ipdController,
-                      cursorColor: Color(0xFF163352),
-                      decoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                          color: Color(0xFF163352),
-                        ),
-                        labelText: 'Enter IPD value',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        focusedBorder:  OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide(
-                            color: Color(0xFF163352),
+                        _buildSignDropdown(selectedSignDVSpR, (newValue) {
+                          setState(() {
+                            selectedSignDVSpR = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", selectedDVSpR, (newValue) {
+                          setState(() {
+                            selectedDVSpR = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(selectedSignDVSpL, (newValue) {
+                          setState(() {
+                            selectedSignDVSpL = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", selectedDVSpL, (newValue) {
+                          setState(() {
+                            selectedDVSpL = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(selectedSignCylR, (newValue) {
+                          setState(() {
+                            selectedSignCylR = newValue;
+                          });
+                        }),
+                        _buildDropdown(6, "Cyl.", selectedCylR, (newValue) {
+                          setState(() {
+                            selectedCylR = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(selectedSignCylL, (newValue) {
+                          setState(() {
+                            selectedSignCylL = newValue;
+                          });
+                        }),
+                        _buildDropdown(6, "Cyl.", selectedCylL, (newValue) {
+                          setState(() {
+                            selectedCylL = newValue;
+                          });
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 16,),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Axis'),
+                        // _buildTextField('R', _axisRController),
+                        _buildAxisWheel("Axis R", _axisRValue, (newValue) {
+                          setState(() {
+                            _axisRValue = newValue;
+                            _axisRController.text = newValue.toString();
+                          });
+                        }),
+                        _buildAxisWheel("Axis L", _axisLValue, (newValue) {
+                          setState(() {
+                            _axisLValue = newValue;
+                            _axisLController.text = newValue.toString();
+                          });
+                        }),
+                        // _buildTextField('L', _axisLController),
+                      ]
+                  ),
+                  SizedBox(height: 25,),
+                  Row(
+                    children: [
+                      _buildTextLabel("IPD"),
+                      SizedBox(width: 113,),
+                      Container(
+                        width: 215,
+                        child: TextField(
+                          controller: _ipdController,
+                          cursorColor: Color(0xFF163352),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // Change font weight here
+                          ),
+                          decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                              color: Color(0xFF163352),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            labelText: 'Enter IPD value',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            focusedBorder:  OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: Color(0xFF163352),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Near Vision Required',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Near Vision Required',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Checkbox(
+                        activeColor: Color(0xFF163352),
+                        value: isNVR,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isNVR = value ?? false;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                  Checkbox(
-                    activeColor: Color(0xFF163352),
-                    value: isNVR,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isNVR = value ?? false;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              isNVR ? GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _buildTextLabel('Near Vision'),
-                  _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
-                    setState(() {
-                      selectedNVL = newValue;
-                    });
-                  }),
-                  _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
-                    setState(() {
-                      selectedNVR = newValue;
-                    });
-                  }),
+                  SizedBox(height: 20,),
+                  isNVR ? GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Near Vision'),
+                        _buildNearVisionDropdown(selectedNVR, "R", (newValue) {
+                          setState(() {
+                            selectedNVR = newValue;
+                          });
+                        }),
+                        _buildNearVisionDropdown(selectedNVL, "L", (newValue) {
+                          setState(() {
+                            selectedNVL = newValue;
+                          });
+                        }),
+                        _buildTextLabel('Add  \'+\' '),
+                        _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
+                          setState(() {
+                            selectedNVSpR = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
+                          setState(() {
+                            selectedNVSpL = newValue;
+                          });
+                        }),
+                      ]
+                  ): SizedBox.shrink(),
                 ]
-              ): SizedBox.shrink(),
-              isNVR ? SizedBox(height: 16,): SizedBox.shrink(),
-              isNVR ? GridView.count(
-                crossAxisCount: 4,
-                childAspectRatio: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0,
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  _buildSignDropdown(selectedSignNVSpL, (newValue) {
-                    setState(() {
-                      selectedSignNVSpL = newValue;
-                    });
-                  }),
-                  _buildDropdown(8, "Sp.", selectedNVSpL, (newValue) {
-                    setState(() {
-                      selectedNVSpL = newValue;
-                    });
-                  }),
-                  _buildSignDropdown(selectedSignNVSpR, (newValue) {
-                    setState(() {
-                      selectedSignNVSpR = newValue;
-                    });
-                  }),
-                  _buildDropdown(8, "Sp.", selectedNVSpR, (newValue) {
-                    setState(() {
-                      selectedNVSpR = newValue;
-                    });
-                  }),
-                ]
-              ): SizedBox.shrink(),
-              isNVR ? SizedBox(height: 20,): SizedBox.shrink(),
+              ),
               Divider(),
               SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              ExpansionTile(
+                  iconColor: Color(0xFF163352),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.search,
+                      size: 30.0,
+                      color: Color(0xFF163352),
+                    ),
+                    SizedBox(width: 20,),
+                    _buildEyeLabel("With Correction"),
+                  ],
+                ),
                 children: [
-                  Icon(
-                    Icons.search,
-                    size: 30.0,
-                    color: Color(0xFF163352),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        const SizedBox(),
+                        // Center(child: _buildEyeLabel("RIGHT Eye")),
+                        // Center(child: _buildEyeLabel("LEFT Eye")),
+                        Center(child: Image.asset('assets/images/eyeR.png')),
+                        Center(child: Image.asset('assets/images/eyeL.png')),
+                      ]
                   ),
-                  SizedBox(width: 20,),
-                  _buildEyeLabel("With Correction"),
-                ],
-              ),
-              SizedBox(height: 20,),
-              GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildTextLabel('Distance Vision'),
-                    _buildDistanceVisionDropdown(CorrectedDVL, "L", (newValue) {
-                      setState(() {
-                        CorrectedDVL = newValue;
-                      });
-                    }),
-                    _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
-                      setState(() {
-                        CorrectedDVR = newValue;
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildSignDropdown(CorrectedSignDVSpL, (newValue) {
-                      setState(() {
-                        CorrectedSignDVSpL = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedDVSpL, (newValue) {
-                      setState(() {
-                        CorrectedDVSpL = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
-                      setState(() {
-                        CorrectedSignDVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
-                      setState(() {
-                        CorrectedDVSpR = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(CorrectedSignCylL, (newValue) {
-                      setState(() {
-                        CorrectedSignCylL = newValue;
-                      });
-                    }),
-                    _buildDropdown(6, "Cyl.", CorrectedCylL, (newValue) {
-                      setState(() {
-                        CorrectedCylL = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(CorrectedSignCylR, (newValue) {
-                      setState(() {
-                        CorrectedSignCylR = newValue;
-                      });
-                    }),
-                    _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
-                      setState(() {
-                        CorrectedCylR = newValue;
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildTextLabel('Axis'),
-                    _buildAxisWheel("Axis L", _CorrectedaxisLValue, (newValue) {
-                      setState(() {
-                        _CorrectedaxisLValue = newValue;
-                        _CorrectedAxisLController.text = newValue.toString();
-                      });
-                    }),
-                    _buildAxisWheel("Axis R", _CorrectedaxisRValue, (newValue) {
-                      setState(() {
-                        _CorrectedaxisRValue = newValue;
-                        _CorrectedAxisRController.text = newValue.toString();
-                      });
-                    }),
-                  ]
-              ),
-              SizedBox(height: 16,),
-              Row(
-                children: [
-                  _buildTextLabel("IPD"),
-                  SizedBox(width: 125,),
-                  Container(
-                    width: 215,
-                    child: TextField(
-                      controller: _CorrectedIpdController,
-                      cursorColor: Color(0xFF163352),
-                      decoration: InputDecoration(
-                        labelStyle: const TextStyle(
-                          color: Color(0xFF163352),
-                        ),
-                        labelText: 'Enter IPD value',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xFF163352),
+                  SizedBox(height: 20,),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Distance Vision'),
+                        _buildDistanceVisionDropdown(CorrectedDVR, "R", (newValue) {
+                          setState(() {
+                            CorrectedDVR = newValue;
+                          });
+                        }),
+                        _buildDistanceVisionDropdown(CorrectedDVL, "L", (newValue) {
+                          setState(() {
+                            CorrectedDVL = newValue;
+                          });
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 16,),
+                  GridView.count(
+                      crossAxisCount: 4,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildSignDropdown(CorrectedSignDVSpR, (newValue) {
+                          setState(() {
+                            CorrectedSignDVSpR = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", CorrectedDVSpR, (newValue) {
+                          setState(() {
+                            CorrectedDVSpR = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(CorrectedSignDVSpL, (newValue) {
+                          setState(() {
+                            CorrectedSignDVSpL = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", CorrectedDVSpL, (newValue) {
+                          setState(() {
+                            CorrectedDVSpL = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(CorrectedSignCylR, (newValue) {
+                          setState(() {
+                            CorrectedSignCylR = newValue;
+                          });
+                        }),
+                        _buildDropdown(6, "Cyl.", CorrectedCylR, (newValue) {
+                          setState(() {
+                            CorrectedCylR = newValue;
+                          });
+                        }),
+                        _buildSignDropdown(CorrectedSignCylL, (newValue) {
+                          setState(() {
+                            CorrectedSignCylL = newValue;
+                          });
+                        }),
+                        _buildDropdown(6, "Cyl.", CorrectedCylL, (newValue) {
+                          setState(() {
+                            CorrectedCylL = newValue;
+                          });
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 16,),
+                  GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Axis'),
+                        _buildAxisWheel("Axis R", _CorrectedaxisRValue, (newValue) {
+                          setState(() {
+                            _CorrectedaxisRValue = newValue;
+                            _CorrectedAxisRController.text = newValue.toString();
+                          });
+                        }),
+                        _buildAxisWheel("Axis L", _CorrectedaxisLValue, (newValue) {
+                          setState(() {
+                            _CorrectedaxisLValue = newValue;
+                            _CorrectedAxisLController.text = newValue.toString();
+                          });
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 25),
+                  Row(
+                    children: [
+                      _buildTextLabel("IPD"),
+                      SizedBox(width: 113,),
+                      Container(
+                        width: 215,
+                        child: TextField(
+                          controller: _CorrectedIpdController,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // Change font weight here
+                          ),
+                          cursorColor: Color(0xFF163352),
+                          decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                              color: Color(0xFF163352),
+                              fontWeight: FontWeight.bold,
+                            ),
+                            labelText: 'Enter IPD value',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            focusedBorder:  OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: Color(0xFF163352),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                  SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Near Vision Required',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Checkbox(
+                        activeColor: Color(0xFF163352),
+                        value: CorrectedisNVR,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            CorrectedisNVR = value ?? false;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  CorrectedisNVR ? GridView.count(
+                      crossAxisCount: 3,
+                      childAspectRatio: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        _buildTextLabel('Near Vision'),
+                        _buildNearVisionDropdown(CorrectedNVR, "R", (newValue) {
+                          setState(() {
+                            CorrectedNVR = newValue;
+                          });
+                        }),
+                        _buildNearVisionDropdown(CorrectedNVL, "L", (newValue) {
+                          setState(() {
+                            CorrectedNVL = newValue;
+                          });
+                        }),
+                        _buildTextLabel('Add \'+\' '),
+                        _buildDropdown(8, "Sp.", CorrectedNVSpR, (newValue) {
+                          setState(() {
+                            CorrectedNVSpR = newValue;
+                          });
+                        }),
+                        _buildDropdown(8, "Sp.", CorrectedNVSpL, (newValue) {
+                          setState(() {
+                            CorrectedNVSpL = newValue;
+                          });
+                        }),
+                      ]
+                  ): SizedBox.shrink(),
+                ]
               ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Near Vision Required',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Checkbox(
-                    activeColor: Color(0xFF163352),
-                    value: CorrectedisNVR,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        CorrectedisNVR = value ?? false;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20,),
-              CorrectedisNVR ? GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildTextLabel('Near Vision'),
-                    _buildNearVisionDropdown(CorrectedNVL, "L", (newValue) {
-                      setState(() {
-                        CorrectedNVL = newValue;
-                      });
-                    }),
-                    _buildNearVisionDropdown(CorrectedNVR, "R", (newValue) {
-                      setState(() {
-                        CorrectedNVR = newValue;
-                      });
-                    }),
-                  ]
-              ): SizedBox.shrink(),
-              CorrectedisNVR ? SizedBox(height: 16,): SizedBox.shrink(),
-              CorrectedisNVR ? GridView.count(
-                  crossAxisCount: 4,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildSignDropdown(CorrectedSignNVSpL, (newValue) {
-                      setState(() {
-                        CorrectedSignNVSpL = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedNVSpL, (newValue) {
-                      setState(() {
-                        CorrectedNVSpL = newValue;
-                      });
-                    }),
-                    _buildSignDropdown(CorrectedSignNVSpR, (newValue) {
-                      setState(() {
-                        CorrectedSignNVSpR = newValue;
-                      });
-                    }),
-                    _buildDropdown(8, "Sp.", CorrectedNVSpR, (newValue) {
-                      setState(() {
-                        CorrectedNVSpR = newValue;
-                      });
-                    }),
-                  ]
-              ): SizedBox.shrink(),
-              CorrectedisNVR ? SizedBox(height: 20,): SizedBox.shrink(),
               Divider(),
               SizedBox(height: 20,),
               Row(
@@ -717,14 +732,15 @@ class _User2State extends State<User2> {
                   ),
                   SizedBox(width: 20,),
                   _buildEyeLabel("Bifocal"),
-                SizedBox(width: 60,),
-                SizedBox(
-                  width: 200,
-                  child: _buildBifocalDropdown(selectedBifocal, (newValue) {
-                    setState(() {
-                      selectedBifocal = newValue;
-                    });
-                  }),
+                SizedBox(width: 35,),
+                Expanded(
+                  child: SizedBox(
+                    child: _buildBifocalDropdown(selectedBifocal, (newValue) {
+                      setState(() {
+                        selectedBifocal = newValue;
+                      });
+                    }),
+                  ),
                 ),
                 ],
               ),
@@ -739,14 +755,15 @@ class _User2State extends State<User2> {
                   ),
                   SizedBox(width: 20,),
                   _buildEyeLabel("Colour"),
-                SizedBox(width: 60,),
-                SizedBox(
-                  width: 200,
-                  child: _buildColorDropdown(selectedColor, (newValue) {
-                    setState(() {
-                      selectedColor = newValue;
-                    });
-                  }),
+                SizedBox(width: 40,),
+                Expanded(
+                  child: SizedBox(
+                    child: _buildColorDropdown(selectedColor, (newValue) {
+                      setState(() {
+                        selectedColor = newValue;
+                      });
+                    }),
+                  ),
                 ),
                 ],
               ),
@@ -761,14 +778,16 @@ class _User2State extends State<User2> {
                   ),
                   SizedBox(width: 20,),
                   _buildEyeLabel("Remarks"),
-                SizedBox(width: 40,),
-                SizedBox(
-                  width: 200,
-                  child: _buildRemarksDropdown(selectedRemarks, (newValue) {
-                    setState(() {
-                      selectedRemarks = newValue;
-                    });
-                  }),
+                SizedBox(width: 15,),
+                Expanded(
+                  child: SizedBox(
+                    // width: 200,
+                    child: _buildRemarksDropdown(selectedRemarks, (newValue) {
+                      setState(() {
+                        selectedRemarks = newValue;
+                      });
+                    }),
+                  ),
                 ),
                 ],
               ),
@@ -829,7 +848,8 @@ class _User2State extends State<User2> {
     return Text(
       text,
       style: const TextStyle(
-          fontSize: 18,
+          color: Color(0xFF163352),
+          fontSize: 20,
           fontWeight: FontWeight.bold
       ),
       // textAlign: TextAlign.center,
@@ -841,7 +861,13 @@ class _User2State extends State<User2> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(text),
+        Text(
+            text,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            )
+        ),
       ],
     );
   }
@@ -854,7 +880,12 @@ class _User2State extends State<User2> {
 
     return DropdownButton<double>(
       value: selectedValue,
-      hint: Text(hint),
+      hint: Text(
+          hint,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )
+      ),
       items: values.map((double value) {
         return DropdownMenuItem<double>(
           value: value,
@@ -871,7 +902,12 @@ class _User2State extends State<User2> {
 
     return DropdownButton<String>(
       value: selectedSign,
-      hint: Text("+/-"),
+      hint: Text(
+          "+/-",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )
+      ),
       items: signs.map((String value) {
         return DropdownMenuItem<String>(
           value: value,
@@ -891,7 +927,12 @@ class _User2State extends State<User2> {
       child: Center(
         child: DropdownButton<String>(
           value: value,
-          hint: Text(hint),
+          hint: Text(
+              hint,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              )
+          ),
           items: visionValues.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
@@ -912,7 +953,12 @@ class _User2State extends State<User2> {
       child: DropdownButton<String>(
         dropdownColor: Color(0xFFE9E6DB),
         value: value,
-        hint: Text(hint),
+        hint: Text(
+            hint,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            )
+        ),
         items: visionValues.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -928,26 +974,28 @@ class _User2State extends State<User2> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: 50,
+        Expanded(
+          // height: 75, // Increase height of the ListWheelScrollView
           child: ListWheelScrollView.useDelegate(
-            magnification: 1.05,
-            diameterRatio: 1.2,
-            overAndUnderCenterOpacity: 0.85,
+            magnification: 1.1, // Increase magnification for larger items
+            diameterRatio: 1.4, // Adjust diameter ratio for a larger curve
+            overAndUnderCenterOpacity: 0.5,
             useMagnifier: true,
-            itemExtent: 20,
+            itemExtent: 30, // Increase item extent for taller items
             onSelectedItemChanged: onSelectedItemChanged,
             childDelegate: ListWheelChildBuilderDelegate(
               builder: (context, index) {
                 return Container(
-                    width: 50,
+                    width: 75, // Increase width of each item
                     color: Color(0xFF163352),
                     child: Center(
                         child: Text(
                           (index * 5).toString(),
                           style: TextStyle(
-                              color: Colors.white,
+                            color: Colors.white,
+                            // fontSize: 20, // Increase font size
                           ),
+
                         )
                     )
                 );
@@ -960,6 +1008,7 @@ class _User2State extends State<User2> {
     );
   }
 
+
   Widget _buildBifocalDropdown(String? value, Function(String?) onChanged) {
     List<String> bifocalValues = ["Kryptok", "Executive", "D-Segment", "Trifocal", "Omnivision", "Progressive"];
 
@@ -968,7 +1017,12 @@ class _User2State extends State<User2> {
       child: DropdownButton<String>(
         dropdownColor: Color(0xFFE9E6DB),
         value: value,
-        hint: Text("Select Bifocal     "),
+        hint: Text(
+            "Select Bifocal      ",
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Change font weight here
+          ),
+        ),
         items: bifocalValues.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -988,7 +1042,12 @@ class _User2State extends State<User2> {
       child: DropdownButton<String>(
         dropdownColor: Color(0xFFE9E6DB),
         value: value,
-        hint: Text("Select Color        "),
+        hint: Text(
+            "Select Color          ",
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // Change font weight here
+            ),
+        ),
         items: colorValues.map((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -1008,7 +1067,12 @@ class _User2State extends State<User2> {
       child: DropdownButton<String>(
         dropdownColor: Color(0xFFE9E6DB),
         value: value,
-        hint: Text("Select Remarks  "),
+        hint: Text(
+            "Select Remarks  ",
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Change font weight here
+          ),
+        ),
         items: remarksValues.map((String value) {
           return DropdownMenuItem<String>(
             value: value,

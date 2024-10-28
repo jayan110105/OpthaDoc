@@ -314,6 +314,7 @@ class _campDashboardState extends State<campDashboard> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),

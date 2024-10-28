@@ -6,7 +6,6 @@ import 'package:optha_doc/services/Hive/patients.dart';
 import 'package:optha_doc/services/Hive/optometry_details.dart';
 import 'package:optha_doc/ui/Camp/camp_dashboard.dart';
 import 'package:optha_doc/ui/Camp/camp_registration.dart';
-import 'package:optha_doc/ui/Unused/PatientSearch.dart';
 import 'package:optha_doc/ui/screens/login.dart';
 import 'package:optha_doc/ui/screens/register.dart';
 import 'package:optha_doc/ui/screens/User1.dart';
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        dividerColor: Colors.transparent, // Change the divider color to black
         textSelectionTheme: const TextSelectionThemeData(
           selectionHandleColor: Color(0xFF163352), // Change the selection handle (cursor dropper) color to black
         ),
@@ -59,10 +59,6 @@ class MyApp extends StatelessWidget {
         '/campdashboard': (context) => const campDashboard(),
         '/registration': (context) => const User1(),
         '/campregistration': (context) => const campRegistration(),
-        '/eyecheckup': (context) => const SearchPatient(routeName: 'eyecheckup'),
-        '/viewrecords': (context) => const SearchPatient(routeName: 'viewrecords'),
-        '/editrecords': (context) => const SearchPatient(routeName: 'editrecords'),
-        '/appointment': (context) => const SearchPatient(routeName: 'appointment'),
       },
     );
   }
