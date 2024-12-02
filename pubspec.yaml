@@ -77,8 +77,7 @@ flutter:
      - assets/images/eyeL.png
      - assets/images/eyeR.png
      - assets/images/KMClogo.jpg
-     - assets/icon/icon.png
-
+     - assets/icon/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -96,6 +95,8 @@ flutter:
          - asset: assets/fonts/Poppins-Regular.ttf
          - asset: assets/fonts/Poppins-Bold.ttf
            weight: 700
+         - asset: assets/fonts/Poppins-Medium.ttf
+           weight: 500
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
